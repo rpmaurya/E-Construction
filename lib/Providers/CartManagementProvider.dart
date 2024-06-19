@@ -1,5 +1,6 @@
 import 'package:e_basket/models/CartProductListModel.dart';
 import 'package:e_basket/models/ProductListByCategoryIdModel.dart';
+import 'package:e_basket/models/SearchProductListModel.dart';
 import 'package:e_basket/models/SubcategoryModel.dart';
 import 'package:e_basket/models/UpdateProductListModel.dart';
 import 'package:e_basket/services/CartManagementService.dart';
@@ -13,20 +14,21 @@ class Cartmanagementprovider with ChangeNotifier {
   CartProductListModel? cartProductListModel;
   // CartResponseList?cartResponseList;
   UpdateProductListModel? updateProductListModel;
+  SearchProductListModel? searchProductListModel;
   var isLoding = false;
   Future<ProductListByCategoryIdModel?> getProductList(
       {required BuildContext context,
       required setState,
       required categoryId,
       subCategoryId}) async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
-   var getid = pref.getInt('userId');
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var getid = pref.getInt('userId');
     Map<String, dynamic> query = {
       "page": 0,
       "size": 20,
       'categoryId': categoryId,
       'subcategoryId': subCategoryId,
-      'userId':getid
+      'userId': getid
     };
     print({'query of product list': query});
     try {
@@ -39,14 +41,12 @@ class Cartmanagementprovider with ChangeNotifier {
         if (value?.status?.httpCode == '200') {
           setState(() {
             productListByCategoryId = value;
-            
+
             notifyListeners();
             isLoding = false;
-           
           });
         }
       });
-      
     } catch (e) {
       print({'object': e});
     }
@@ -73,7 +73,8 @@ class Cartmanagementprovider with ChangeNotifier {
         if (value?.status?.httpCode == '200') {
           setState(() {
             subCategoryModel = value;
-            isLoding=false;
+            isLoding = false;
+            notifyListeners();
           });
         }
       });
@@ -82,13 +83,12 @@ class Cartmanagementprovider with ChangeNotifier {
     }
   }
 
-    Future<void> getCartProductList({
+  Future<void> getCartProductList({
     required BuildContext context,
     required setState,
-    
   }) async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
-   var getid = pref.getInt('userId');
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var getid = pref.getInt('userId');
     Map<String, dynamic> query = {
       'userId': getid,
     };
@@ -97,86 +97,113 @@ class Cartmanagementprovider with ChangeNotifier {
       setState(() {
         isLoding = true;
       });
-      await cartmanagementservice.getCartProductListApi(query: query, context: context, setState: setState).then((value){
-        if(value?.status?.httpCode=='200'){
-          setState((){
-        cartProductListModel=value;
-        notifyListeners();
-        isLoding=false;
+      await cartmanagementservice
+          .getCartProductListApi(
+              query: query, context: context, setState: setState)
+          .then((value) {
+        if (value?.status?.httpCode == '200') {
+          setState(() {
+            cartProductListModel = value;
+            notifyListeners();
+            isLoding = false;
           });
         }
       });
-          
-      
     } catch (e) {
       print({'object': e});
     }
   }
 
- Future addToCart({
+  Future addToCart({
     required BuildContext context,
     required setState,
     required productId,
     required quentity,
   }) async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
-   var getid = pref.getInt('userId');
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var getid = pref.getInt('userId');
     Map<String, dynamic> body = {
-        "productId":productId,
-    "userId":getid,
-    "quantity":quentity
+      "productId": productId,
+      "userId": getid,
+      "quantity": quentity
     };
     print({'query of subcategory id': body});
     try {
       setState(() {
         isLoding = true;
       });
-      await cartmanagementservice.addtoCartApi(body: body, context: context, setState: setState).then((onValue){
-        if(onValue==true){
-           setState((){
-          isLoding=false;
-        });
+      await cartmanagementservice
+          .addtoCartApi(body: body, context: context, setState: setState)
+          .then((onValue) {
+        if (onValue == true) {
+          setState(() {
+            isLoding = false;
+          });
         }
       });
-       
-      
     } catch (e) {
       print({'object': e});
     }
   }
 
-    Future updateCartProductList({
+  Future updateCartProductList({
     required BuildContext context,
     required setState,
     required productId,
     required quentity,
   }) async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
-   var getid = pref.getInt('userId');
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var getid = pref.getInt('userId');
     Map<String, dynamic> body = {
-        "productId":productId,
-    "userId":getid,
-    "quantity":quentity
+      "productId": productId,
+      "userId": getid,
+      "quantity": quentity
     };
     print({'query of subcategory id': body});
     try {
       setState(() {
         isLoding = true;
       });
-      await cartmanagementservice.updateCartProductListApi(body: body, context: context, setState: setState).then((value){
-        if(value?.status?.httpCode=='200'){
-      setState((){
-        updateProductListModel=value;
-      notifyListeners();
-       
-        isLoding=false;
-      });
+      await cartmanagementservice
+          .updateCartProductListApi(
+              body: body, context: context, setState: setState)
+          .then((value) {
+        if (value?.status?.httpCode == '200') {
+          setState(() {
+            updateProductListModel = value;
+            notifyListeners();
+
+            isLoding = false;
+          });
         }
       });
-          
-      
     } catch (e) {
       print({'object': e});
     }
+  }
+
+  Future<SearchProductListModel?> searchProductList(
+      {required BuildContext context,
+      required setState,
+      required searchText}) async {
+    Map<String, dynamic> query = {
+      "page": 0,
+      "size": 10,
+      'isDeleted': null,
+      'searchText': searchText,
+      'filterByQuantity': '',
+    };
+    print({'query of product list': query});
+    try {
+      setState(() {
+        isLoding = true;
+      });
+      var searchResp = await cartmanagementservice.searchtProductListApi(
+          query: query, context: context, setState: setState);
+      return searchResp;
+    } catch (e) {
+      print({'object': e});
+    }
+    return null;
   }
 }

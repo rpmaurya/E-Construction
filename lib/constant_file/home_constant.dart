@@ -2,19 +2,23 @@ class HomeConstants {
   static List crouselitems = [
     {
       "crouselImage":
-          "assets/images/onboarding (1).png"
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuTrt3g_7V8yZXadwgVXv-it71hOHjGPaUsw9bUTbww4-HNV8tma5A4OcgqA&s'
     },
     {
       "crouselImage":
-          "assets/images/onboarding (2).png"
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kWaQ2_jqpAKSbCXTUwGK175KgMEr0nVWoEP1QlAF8dT5eOSjAQJx7DXpUQ&s"
     },
     {
       "crouselImage":
-          "assets/images/onboarding (3).png"
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4dYcj9xpNzTlictONSDn0vxrcwqrNJTYOzzP70vUjlA9yg_xkMaRAf2uz3w&s"
     },
   ];
-
-  static String exploreTitleName = 'Explore By Category';
+  static List onboardingList = [
+    {"crouselImage": "assets/images/onboarding (1).png"},
+    {"crouselImage": "assets/images/onboarding (2).png"},
+    {"crouselImage": "assets/images/onboarding (3).png"},
+  ];
+  static String exploreTitleName = 'BRANDS';
   static String exploreSeeAll = 'See All';
   // static List categoryImages = [
   //   'https://www.lalpathlabs.com/blog/wp-content/uploads/2019/01/Fruits-and-Vegetables.jpg',

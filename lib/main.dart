@@ -1,5 +1,6 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Providers/CartManagementProvider.dart';
+import 'package:e_basket/Providers/SubscriptionProvider.dart';
 import 'package:e_basket/Screens/starting_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,26 +16,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider<AuthProvider>(create: (BuildContext context)=>AuthProvider()),
-      ChangeNotifierProvider<Cartmanagementprovider>(create: (BuildContext context)=>Cartmanagementprovider())
-      ],child: MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const SplashScreen()
-    ),);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(
+            create: (BuildContext context) => AuthProvider()),
+        ChangeNotifierProvider<Cartmanagementprovider>(
+            create: (BuildContext context) => Cartmanagementprovider()),
+        ChangeNotifierProvider<Subscriptionprovider>(
+            create: (BuildContext context) => Subscriptionprovider())
+      ],
+      child: MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const SplashScreen()),
+    );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-
 
   final String title;
 
@@ -47,26 +51,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
-        
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        
         title: Text(widget.title),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(

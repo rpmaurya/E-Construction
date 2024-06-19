@@ -2,11 +2,14 @@ import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Screens/login_screen/login_screen.dart';
 import 'package:e_basket/common_file/common_button.dart';
 import 'package:e_basket/common_file/common_screen.dart';
+import 'package:e_basket/common_file/location_picker.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl_phone_field/intl_phone_field.dart';
+
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -17,10 +20,12 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final _textController = TextEditingController();
+  final _yourGoogleAPIKey = 'AIzaSyAsvUhrUgvISvkivAow2ydWFgyATb8Fivo';
 
   @override
-  
+
   // RegisterController controller = RegisterController();
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of(context, listen: false);
@@ -42,12 +47,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Center(child: Text('E-Construction',style:TextConstant().logoText,)),
-SizedBox(height: 50,),
+                        Center(
+                            child: Text(
+                          'E-Construction',
+                          style: TextConstant().logoText,
+                        )),
+                        SizedBox(
+                          height: 50,
+                        ),
                         Text(
                           'User Registration',
                           style: GoogleFonts.roboto(
-                              fontSize: 32, fontWeight: FontWeight.w500,color: ColorConstant().textColor),
+                              fontSize: 32,
+                              fontWeight: FontWeight.w500,
+                              color: ColorConstant().textColor),
                         ),
                         SizedBox(
                           height: 20,
@@ -148,7 +161,7 @@ SizedBox(height: 50,),
                           // height: 45,
                           width: size.width,
                           child: IntlPhoneField(
-                            controller:authProvider.phoneNumber,
+                            controller: authProvider.phoneNumber,
                             flagsButtonPadding: EdgeInsets.all(8.0),
                             keyboardType: TextInputType.phone,
                             dropdownIconPosition: IconPosition.trailing,
@@ -174,18 +187,16 @@ SizedBox(height: 50,),
                               if (value == null) {
                                 return 'kj,n,n,k';
                               }
+                              return null;
                             },
                           ),
                         ),
-
-                     
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 60, child: LocationPicker()),
                         CommonButton(
                             onselect: () {
                               if (_formKey.currentState!.validate()) {
-                              authProvider.registerUser(context: context, setState: setState);
+                                authProvider.registerUser(
+                                    context: context, setState: setState);
                               }
                             },
                             text: 'REGISTER'),
@@ -210,16 +221,15 @@ SizedBox(height: 50,),
                   ),
                 ),
               ),
-               Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Image.asset('assets/images/logo_image.png'))
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Image.asset('assets/images/logo_image.png'))
             ],
           ),
         ),
       ),
     );
   }
-  }
-  
+}

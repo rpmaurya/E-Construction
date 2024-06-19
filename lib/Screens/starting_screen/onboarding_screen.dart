@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/bottom_bar_screen.dart';
 import 'package:e_basket/Screens/login_screen/login_screen.dart';
 import 'package:e_basket/common_file/common_button.dart';
+import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/home_constant.dart';
+import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           SizedBox(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.93,
+            height: MediaQuery.of(context).size.height,
             child: Column(children: [
               Expanded(
                 child: Container(
@@ -33,7 +35,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     // borderRadius: BorderRadius.circular(15),
                   ),
                   child: CarouselSlider.builder(
-                    itemCount: HomeConstants.crouselitems.length,
+                    itemCount: HomeConstants.onboardingList.length,
                     itemBuilder:
                         (BuildContext context, index, int pageViewIndex) =>
                             InkWell(
@@ -45,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: ClipRRect(
                             // borderRadius: BorderRadius.circular(15),
                             child: Image.asset(
-                          HomeConstants.crouselitems[index]['crouselImage'],
+                          HomeConstants.onboardingList[index]['crouselImage'],
                           fit: BoxFit.fill,
                         )),
                       ),
@@ -68,18 +70,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children:
-                    HomeConstants.crouselitems.asMap().entries.map((entry) {
+                    HomeConstants.onboardingList.asMap().entries.map((entry) {
                   return GestureDetector(
                     onTap: () => _controller.animateToPage(entry.key),
                     child: Container(
-                      width: 12.0,
-                      height: 12.0,
+                      width: 10.0,
+                      height: 10.0,
                       margin: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 4.0),
+                          vertical: 5.0, horizontal: 4.0),
                       decoration: BoxDecoration(
                           border: Border.all(width: 1, color: Colors.black),
                           shape: BoxShape.circle,
-                          color: Colors.white
+                          color: ColorConstant()
+                              .containerColor
                               .withOpacity(_current == entry.key ? 0.9 : 0.4)
                           // color: Get.isDarkMode
                           //     ? Colors.white
@@ -92,21 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ]),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(onPressed: ()async{
-                      SharedPreferences pref = await SharedPreferences.getInstance();
 
-                pref.getString('token') != null
-                    ? Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const BottomBarScreen()))
-                    : Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
-            }, child: Text('SKIP>>'))),
           // CommonButton(
           //     text: 'SKIP',
           //     onselect: () async {
@@ -123,6 +112,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           //                   builder: (context) => const LoginScreen()));
           //     })
         ],
+      ),
+      floatingActionButton: InkWell(
+        onTap: () async {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+
+          pref.getString('token') != null
+              ? Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BottomBarScreen()))
+              : Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+        },
+        child: Container(
+          width: 100,
+          height: 40,
+          decoration: BoxDecoration(
+              gradient: ColorConstant().bottonColor,
+              borderRadius: BorderRadius.circular(25)),
+          child: Center(
+              child: Text(
+            'SKIP>>',
+            style: TextConstant().buttonText,
+          )),
+        ),
       ),
     );
   }

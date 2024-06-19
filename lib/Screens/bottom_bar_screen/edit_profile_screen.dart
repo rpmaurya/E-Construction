@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
-   final int? userId;
-  const EditProfileScreen({super.key,this.userId});
+  final int? userId;
+  const EditProfileScreen({super.key, this.userId});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -15,21 +15,17 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formkey = GlobalKey<FormState>();
-  
+
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of(context, listen: false);
     return Scaffold(
+      backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         title: Text('Edit Profile'),
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: ColorConstant().gradientColor)),
         child: Form(
             key: _formkey,
             child: Padding(
@@ -56,7 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     CustomTextfield(
                       fillColor: Colors.white,
-                      controller:authProvider.lastName,
+                      controller: authProvider.lastName,
                       hintText: 'Enter Last Name',
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -85,7 +81,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     CommonButton(
                         onselect: () {
                           if (_formkey.currentState!.validate()) {
-                            authProvider.editProfileById(context: context, setState: setState);
+                            authProvider.editProfileById(
+                                context: context, setState: setState);
                           }
                         },
                         text: 'Submit')

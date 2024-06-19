@@ -1,6 +1,8 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
+import 'package:e_basket/Screens/Subscription_Management_Screen/MySubscription_screen.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/edit_profile_screen.dart';
 import 'package:e_basket/Screens/login_screen/login_screen.dart';
+import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,8 +20,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-  authProvider.getUserById(context: context, setState: setState);
+    authProvider.getUserById(context: context, setState: setState);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Card(
                 shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.green),
+                    side: BorderSide(color: ColorConstant().containerColor),
                     borderRadius: BorderRadius.circular(10)),
                 surfaceTintColor: Colors.white,
                 child: Column(
@@ -88,20 +91,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EditProfileScreen(
-                                          userId: authProvider.userModel?.data?.id,
+                                          userId:
+                                              authProvider.userModel?.data?.id,
                                         )));
                           },
                           child: Container(
                             width: 60,
                             height: 35,
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.green),
+                                border: Border.all(
+                                    color: ColorConstant().containerColor),
                                 borderRadius: BorderRadius.circular(25)),
                             child: Center(
                                 child: Text(
                               'Edit',
                               style: TextStyle(
-                                  color: Colors.green[700],
+                                  color: ColorConstant().textColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700),
                             )),
@@ -128,6 +133,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MysubscriptionScreen()));
+                      },
                       leading: Icon(Icons.calendar_month_rounded),
                       title: Text('My Subscription'),
                       trailing: Icon(Icons.keyboard_arrow_right_outlined),
@@ -178,9 +189,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
-  void removeData()async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
-  pref.clear();
+
+  void removeData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.clear();
   }
 }
