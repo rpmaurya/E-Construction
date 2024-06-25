@@ -437,39 +437,40 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.black45)),
                         child: Center(
-                          child: datepickerCard(date, context),
+                          child: StatefulBuilder(
+                              builder: (context, StateSetter setState) {
+                            return datepickerCard(date, context);
+                          }),
                           // child: CustomDatepickercard(datetext: date),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                        gradient: isSelectedDays.isEmpty
-                            ? null
-                            : ColorConstant().bottonColor,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            visualDensity: VisualDensity.standard,
-                            elevation: 0,
-                            backgroundColor: Colors.transparent),
-                        onPressed: isSelectedDays.isEmpty
-                            ? null
-                            : () {
-                                setState(() {
-                                  print('object');
-                                  visible = true;
-                                });
-                                Navigator.pop(context);
-                              },
-                        child: Center(
-                            child: Text(
-                          'SUBMIT',
-                          style: TextConstant().buttonText,
-                        ))),
+                  GestureDetector(
+                    onTap: isSelectedDays.isEmpty
+                        ? null
+                        : () {
+                            setState(() {
+                              print('object');
+                              visible = true;
+                            });
+                            Navigator.pop(context);
+                          },
+                    child: Container(
+                      height: 40,
+                      margin: EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                          gradient: isSelectedDays.isEmpty
+                              ? ColorConstant().bottonBlurColor
+                              : ColorConstant().bottonColor,
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Center(
+                          child: Text(
+                        'SUBMIT',
+                        style: TextConstant().buttonText,
+                      )),
+                    ),
                   )
                 ],
               ),
@@ -546,24 +547,27 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.black45)),
                         child: Center(
-                          child: ListTile(
-                            minTileHeight: 40,
-                            // visualDensity: VisualDensity.standard,
-                            leading: const Icon(
-                              Icons.calendar_month,
-                              size: 30,
-                            ),
-                            title: Text(
-                              'Subscription Start Date',
-                              style: TextConstant().subtitleText,
-                            ),
-                            subtitle: Text(
-                              date,
-                              style: TextConstant().lableText,
-                            ),
-                            trailing: Icon(Icons.keyboard_arrow_down),
-                          ),
-                          // child: datepickerCard(date, context),
+                          // child: ListTile(
+                          //   minTileHeight: 40,
+                          //   // visualDensity: VisualDensity.standard,
+                          //   leading: const Icon(
+                          //     Icons.calendar_month,
+                          //     size: 30,
+                          //   ),
+                          //   title: Text(
+                          //     'Subscription Start Date',
+                          //     style: TextConstant().subtitleText,
+                          //   ),
+                          //   subtitle: Text(
+                          //     date,
+                          //     style: TextConstant().lableText,
+                          //   ),
+                          //   trailing: Icon(Icons.keyboard_arrow_down),
+                          // ),
+                          child: StatefulBuilder(
+                              builder: (context, StateSetter setState) {
+                            return datepickerCard(date, context);
+                          }),
                           // child: CustomDatepickercard(
                           //   datetext: date,
                           // ),
@@ -571,33 +575,32 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                        gradient: _multiDatePickerValueWithDefaultValue.isEmpty
-                            ? null
-                            : ColorConstant().bottonColor,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            visualDensity: VisualDensity.standard,
-                            elevation: 0,
-                            backgroundColor: Colors.transparent),
-                        onPressed: _multiDatePickerValueWithDefaultValue.isEmpty
-                            ? null
-                            : () {
-                                setState(() {
-                                  print('object');
-                                  visible = true;
-                                });
-                                Navigator.pop(context);
-                              },
-                        child: Center(
-                            child: Text(
-                          'SUBMIT',
-                          style: TextConstant().buttonText,
-                        ))),
+                  GestureDetector(
+                    onTap: _multiDatePickerValueWithDefaultValue.isEmpty
+                        ? null
+                        : () {
+                            setState(() {
+                              print('object');
+                              visible = true;
+                            });
+                            Navigator.pop(context);
+                          },
+                    child: Container(
+                      height: 40,
+                      margin: EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                          gradient:
+                              _multiDatePickerValueWithDefaultValue.isEmpty
+                                  ? ColorConstant().bottonBlurColor
+                                  : ColorConstant().bottonColor,
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Center(
+                          child: Text(
+                        'SUBMIT',
+                        style: TextConstant().buttonText,
+                      )),
+                    ),
                   )
                 ],
               ),
@@ -606,7 +609,7 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
         });
   }
 
-  datepickerCard(String text, context1) {
+  datepickerCard(String text, context) {
     return ListTile(
       minTileHeight: 40,
       // visualDensity: VisualDensity.standard,

@@ -3,6 +3,7 @@ import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Providers/CartManagementProvider.dart';
 import 'package:e_basket/Screens/Product_Management_Screen/product_management_screen.dart';
 import 'package:e_basket/Screens/Product_Management_Screen/search_product_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/profile_screen.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/home_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
@@ -36,18 +37,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
     var h = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: Text('dashboard'),
-      //   actions: [
-      //     GestureDetector(
-      //         onTap: () {
-      //           removeData();
-      //           Navigator.pushReplacement(context,
-      //               MaterialPageRoute(builder: (context) => LoginScreen()));
-      //         },
-      //         child: Icon(Icons.logout))
-      //   ],
-      // ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'E-Construction',
+          style: TextConstant().logoText,
+        ),
+        centerTitle: true,
+        actions: [
+          GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+              },
+              child: Icon(Icons.account_circle_outlined))
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [Text('data')],
+        ),
+      ),
       body: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -60,8 +70,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 side: const WidgetStatePropertyAll(
                     BorderSide(color: Colors.black)),
                 elevation: const WidgetStatePropertyAll(2),
-                padding:
-                    const WidgetStatePropertyAll(EdgeInsets.only(left: 20)),
+                padding: const WidgetStatePropertyAll(
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 20)),
                 backgroundColor: const WidgetStatePropertyAll(Colors.white),
                 surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
                 leading: const Icon(Icons.search),

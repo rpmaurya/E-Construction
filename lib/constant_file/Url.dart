@@ -1,5 +1,5 @@
 const String kUrlBase =
-    // "https://201c-2405-201-4041-caf9-fde1-e243-d531-1cb6.ngrok-free.app/";
+    // "https://fb42-2405-201-4041-caf9-30f4-e425-9e24-6965.ngrok-free.app/";
     "http://ebasket.ap-south-1.elasticbeanstalk.com/";
 const String kRegisterEndUrl = "users/register_user";
 const String kLoginByMobileUrl = 'users/login_by_mobile';
@@ -22,6 +22,13 @@ const String kAddProductSubscriptionEndUrl =
     'subscription/add_product_subscription';
 const String kUpdateSubscriptionEndUrl =
     'subscription/update_product_subscription';
+const String kUpdateSubscptnTemporaryEndUrl =
+    // 'subscription/update_product_subscription_temporarily';
+    'subscription/update_product_subscription_temporarily';
 const String kAddSubscriptionEndUrl = 'subscription/subscribe_product';
 const String kGetTopProductEndUrl = 'product/get_top_products';
 const String kGetSubscriptionEndUrl = 'subscription/get_user_subscriptions';
+const String kResumeSubscriptionEndUrl =
+    'subscription/resume_subscription_temporarily';
+const String kDeleteSubscriptionEndUrl = 'subscription/delete_subscription';
+const String kPauseSubscriptionEndUrl = 'subscription/pause_subscription';

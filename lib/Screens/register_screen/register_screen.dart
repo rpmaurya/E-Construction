@@ -191,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                         ),
-                        SizedBox(height: 60, child: LocationPicker()),
+                        // SizedBox(height: 60, child: LocationPicker()),
                         CommonButton(
                             onselect: () {
                               if (_formKey.currentState!.validate()) {

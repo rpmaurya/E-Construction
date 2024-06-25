@@ -137,7 +137,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MysubscriptionScreen()));
+                                builder: (context) =>
+                                    MysubscriptionScreen())).then((value) {
+                          if (value == true) {
+                            setState(() {});
+                          }
+                        });
                       },
                       leading: Icon(Icons.calendar_month_rounded),
                       title: Text('My Subscription'),

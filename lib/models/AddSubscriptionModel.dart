@@ -43,7 +43,7 @@ class Data {
   dynamic scheduledDates;
   double? deliveryCharge;
   dynamic totalCustomers;
-  double? price;
+  int? price;
 
   Data({
     this.userId,

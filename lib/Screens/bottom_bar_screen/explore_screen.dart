@@ -15,7 +15,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       appBar: AppBar(
         title: Text('data'),
       ),
-      body: LocationPicker(),
+      // body: LocationPicker(),
     );
   }
 }

@@ -68,21 +68,27 @@ class Content {
   int? userId;
   int? productId;
   String? productName;
+  DateTime? pauseDate;
   String? imageUrl;
+  int? temporaryQuantity;
+  String? subscriptionChangeStatus;
   int? quantity;
   String? subscriptionType;
   DateTime? startDate;
   int? subscriptionId;
   dynamic scheduledDates;
-  double? deliveryCharge;
+  dynamic deliveryCharge;
   dynamic totalCustomers;
-  double? price;
+  int? price;
 
   Content({
     this.userId,
     this.productId,
     this.productName,
+    this.pauseDate,
     this.imageUrl,
+    this.temporaryQuantity,
+    this.subscriptionChangeStatus,
     this.quantity,
     this.subscriptionType,
     this.startDate,
@@ -97,7 +103,12 @@ class Content {
         userId: json["userId"],
         productId: json["productId"],
         productName: json["productName"],
+        pauseDate: json["pauseDate"] == null
+            ? null
+            : DateTime.parse(json["pauseDate"]),
         imageUrl: json["imageUrl"],
+        temporaryQuantity: json["temporaryQuantity"],
+        subscriptionChangeStatus: json["subscriptionChangeStatus"],
         quantity: json["quantity"],
         subscriptionType: json["subscriptionType"],
         startDate: json["startDate"] == null
@@ -114,7 +125,11 @@ class Content {
         "userId": userId,
         "productId": productId,
         "productName": productName,
+        "pauseDate":
+            "${pauseDate!.year.toString().padLeft(4, '0')}-${pauseDate!.month.toString().padLeft(2, '0')}-${pauseDate!.day.toString().padLeft(2, '0')}",
         "imageUrl": imageUrl,
+        "temporaryQuantity": temporaryQuantity,
+        "subscriptionChangeStatus": subscriptionChangeStatus,
         "quantity": quantity,
         "subscriptionType": subscriptionType,
         "startDate":
@@ -126,22 +141,6 @@ class Content {
         "price": price,
       };
 }
-
-enum ProductName { APPLE_JUICE, LEMON_JUICE, TROLLY }
-
-final productNameValues = EnumValues({
-  "AppleJuice": ProductName.APPLE_JUICE,
-  "LemonJuice": ProductName.LEMON_JUICE,
-  "Trolly": ProductName.TROLLY
-});
-
-enum SubscriptionType { DAILY, MONTHLY, WEEKLY }
-
-final subscriptionTypeValues = EnumValues({
-  "DAILY": SubscriptionType.DAILY,
-  "MONTHLY": SubscriptionType.MONTHLY,
-  "WEEKLY": SubscriptionType.WEEKLY
-});
 
 class Status {
   String? httpCode;
@@ -165,16 +164,4 @@ class Status {
         "success": success,
         "message": message,
       };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
