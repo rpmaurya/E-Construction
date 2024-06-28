@@ -46,4 +46,12 @@ class TextConstant {
       fontSize: 13, fontWeight: FontWeight.w400, color: Colors.white);
   var icontext = GoogleFonts.inter(
       fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF894910));
+  var drawerText = GoogleFonts.roboto(
+      textStyle: const TextStyle(fontSize: 15),
+      fontWeight: FontWeight.w500,
+      color: const Color.fromRGBO(0, 0, 0, 1));
+  var drawersubtitle = GoogleFonts.inter(
+      textStyle: const TextStyle(fontSize: 13),
+      fontWeight: FontWeight.w500,
+      color: Colors.black);
 }

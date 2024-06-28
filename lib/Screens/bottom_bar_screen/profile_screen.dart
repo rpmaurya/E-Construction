@@ -16,6 +16,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   AuthProvider authProvider = AuthProvider();
+  bool value = false;
+  bool ringbell = false;
+  bool whatsapp = false;
+  bool sms = false;
+  bool email = false;
+  bool notification = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -26,26 +33,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+      backgroundColor: Colors.blueGrey[100],
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
         elevation: 2,
         title: Text('My Account'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 15,
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: ColorConstant().containerColor),
-                    borderRadius: BorderRadius.circular(10)),
-                surfaceTintColor: Colors.white,
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
                 child: Column(
                   children: [
                     Padding(
@@ -121,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextConstant().titleText,
                       ),
                       subtitle: Text(
-                        'Sector- 62,Noida up ',
+                        'H-15,Rise tower,Sector- 62,Noida uttar pradesh ',
                         style: TextConstant().subtitleText,
                       ),
                       trailing: Icon(Icons.keyboard_arrow_right_outlined),
@@ -129,10 +133,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-              Card(
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
                 child: Column(
                   children: [
-                    ListTile(
+                    GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -144,48 +155,136 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           }
                         });
                       },
-                      leading: Icon(Icons.calendar_month_rounded),
-                      title: Text('My Subscription'),
-                      trailing: Icon(Icons.keyboard_arrow_right_outlined),
+                      child: listItem(Icons.calendar_month, 'My Subscription'),
                     ),
                     Divider(),
-                    ListTile(
-                      leading: Icon(Icons.wallet_giftcard_rounded),
-                      title: Text('My Order'),
-                      trailing: Icon(Icons.keyboard_arrow_right_outlined),
+                    GestureDetector(
+                      onTap: () {},
+                      child:
+                          listItem(Icons.content_paste_outlined, 'My Orders'),
                     ),
                     Divider(),
-                    ListTile(
-                      leading: Icon(Icons.wallet),
-                      title: Text('My Wallet'),
-                      trailing: Icon(Icons.keyboard_arrow_right_outlined),
+                    GestureDetector(
+                      onTap: () {},
+                      child: listItem(Icons.wallet_outlined, 'My Wallet'),
                     ),
                     Divider(),
-                    ListTile(
-                      leading: Icon(Icons.payment),
-                      title: Text('My Payment'),
-                      trailing: Icon(Icons.keyboard_arrow_right_outlined),
+                    GestureDetector(
+                      onTap: () {},
+                      child: listItem(Icons.payment_outlined, 'My Payments'),
                     ),
                     Divider(),
-                    ListTile(
-                      leading: Icon(Icons.receipt_sharp),
-                      title: Text('Auto Recharge'),
-                      trailing: Icon(Icons.keyboard_arrow_right_outlined),
+                    GestureDetector(
+                      onTap: () {},
+                      child: listItem(Icons.wallet_outlined, 'Auto Recharge'),
                     ),
                   ],
                 ),
               ),
-              Card(
-                child: GestureDetector(
-                  onTap: () {
-                    removeData();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-                  },
-                  child: ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text('Logout'),
-                  ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Alerts',
+                style: TextConstant().lableText,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  children: [
+                    aletItem(
+                        Icon(
+                          Icons.notifications,
+                          color: Color(0xFFBF5F0B),
+                        ),
+                        'Ring the bell',
+                        ringbell, (value) {
+                      setState(() {
+                        ringbell = value;
+                      });
+                    }),
+                    Divider(),
+                    aletItem(
+                        Image.asset(
+                          'assets/images/whatsapp (1).png',
+                          color: Color(0xFFBF5F0B),
+                          width: 22,
+                          height: 22,
+                        ),
+                        'WhatsApp notifications',
+                        whatsapp, (value) {
+                      setState(() {
+                        whatsapp = value;
+                      });
+                    }),
+                    Divider(),
+                    aletItem(
+                        Icon(
+                          Icons.sms,
+                          color: Color(0xFFBF5F0B),
+                        ),
+                        'SMS notifications',
+                        sms, (value) {
+                      setState(() {
+                        sms = value;
+                      });
+                    }),
+                    Divider(),
+                    aletItem(
+                        Icon(
+                          Icons.email,
+                          color: Color(0xFFBF5F0B),
+                        ),
+                        'Email notifications',
+                        email, (value) {
+                      setState(() {
+                        email = value;
+                      });
+                    }),
+                    Divider(),
+                    aletItem(
+                        Icon(
+                          Icons.notifications,
+                          color: Color(0xFFBF5F0B),
+                        ),
+                        'Push notifications',
+                        notification, (value) {
+                      setState(() {
+                        notification = value;
+                      });
+                    }),
+                    // Theme(
+                    //   data: ThemeData(useMaterial3: false),
+                    //   child: Transform.scale(
+                    //     child: SwitchListTile(
+                    //         dense: true,
+                    //         activeColor: Color(0xFFBF5F0B),
+                    //         activeTrackColor:
+                    //             Color.fromARGB(252, 242, 199, 161),
+                    //         inactiveTrackColor: Colors.grey,
+                    //         value: value,
+                    //         onChanged: (value2) {
+                    //           setState(() {
+                    //             value = value2;
+                    //           });
+                    //         },
+                    //         secondary: CircleAvatar(
+                    //             backgroundColor:
+                    //                 Color.fromARGB(252, 242, 199, 161),
+                    //             child: Icon(
+                    //               Icons.abc_outlined,
+                    //               color: Color(0xFFBF5F0B),
+                    //             )),
+                    //         title: Text('data')),
+                    //   ),
+                    // ),
+                  ],
                 ),
               )
             ],
@@ -195,8 +294,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void removeData() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.clear();
+  listItem(IconData icon, String title) {
+    return Container(
+        child: ListTile(
+      leading: CircleAvatar(
+          backgroundColor: Color.fromARGB(252, 242, 199, 161),
+          child: Icon(
+            icon,
+            color: Color(0xFFBF5F0B),
+          )),
+      title: Text(title),
+      trailing: Icon(Icons.keyboard_arrow_right),
+    ));
+  }
+
+  aletItem(Widget icon, String title, bool selectedValue,
+      void Function(bool)? onChanged) {
+    return Theme(
+      data: ThemeData(useMaterial3: false),
+      child: Container(
+          child: ListTile(
+        leading: CircleAvatar(
+            backgroundColor: Color.fromARGB(252, 242, 199, 161), child: icon),
+        title: Text(title),
+        trailing: Transform.scale(
+          scale: 1.3,
+          child: Switch(
+              activeColor: Color(0xFFBF5F0B),
+              activeTrackColor: Color.fromARGB(252, 242, 199, 161),
+              inactiveTrackColor: Colors.grey,
+              value: selectedValue,
+              onChanged: onChanged),
+        ),
+      )),
+    );
   }
 }

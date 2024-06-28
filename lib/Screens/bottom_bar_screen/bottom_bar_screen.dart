@@ -1,7 +1,7 @@
+import 'package:e_basket/Screens/bottom_bar_screen/OrderScreen.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/dashboard_screen.dart';
-import 'package:e_basket/Screens/bottom_bar_screen/explore_screen.dart';
-import 'package:e_basket/Screens/bottom_bar_screen/profile_screen.dart';
-import 'package:e_basket/Screens/bottom_bar_screen/shoping_cart_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/help_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/wallet_screen.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +19,9 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     DashboardScreen(),
-    ExploreScreen(),
-    ShopingCartScreen(),
-    ProfileScreen()
+    Orderscreen(),
+    WalletScreen(),
+    HelpScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -52,17 +52,17 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                 label: 'Home',
                 backgroundColor: Colors.white24),
             BottomNavigationBarItem(
-                icon: Icon(Icons.explore),
-                label: 'Explore',
+                icon: Icon(Icons.content_paste_outlined),
+                label: 'Orders',
                 backgroundColor: Color.fromRGBO(255, 255, 255, 1)),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
+              icon: Icon(Icons.wallet_outlined),
+              label: 'Wallet',
               // backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Account',
+              icon: Icon(Icons.help_outline_outlined),
+              label: 'Help',
               // backgroundColor: Colors.white,s
             ),
           ],

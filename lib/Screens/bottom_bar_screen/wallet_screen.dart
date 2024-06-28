@@ -12,7 +12,9 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('data'),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text('Wallet'),
       ),
       body: Form(
         child: Center(

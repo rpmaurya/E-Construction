@@ -18,14 +18,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final  formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of(context, listen: false);
-  
-   var size = MediaQuery.of(context).size;
+
+    var size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SizedBox(
@@ -42,14 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(child: Text('E-Construction',style:TextConstant().logoText,)),
+                        Center(
+                            child: Text(
+                          'E-Construction',
+                          style: TextConstant().logoText,
+                        )),
                         SizedBox(
                           height: 50,
                         ),
                         Center(
                             child: Text(
                           'Login',
-                          style:TextConstant().loginText,
+                          style: TextConstant().loginText,
                         )),
                         SizedBox(
                           height: 20,
@@ -62,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 15,
                         ),
 
-                        
                         // PhoneFormField(
                         //     decoration: InputDecoration(
                         //       // counterText: '',
@@ -94,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: authProvider.phoneController,
                             flagsButtonPadding: EdgeInsets.all(5.0),
                             keyboardType: TextInputType.phone,
-                          
                             dropdownIconPosition: IconPosition.trailing,
                             initialCountryCode: 'IN',
                             onChanged: (phone) {
@@ -106,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             decoration: InputDecoration(
                               counterText: '',
                               filled: true,
-                              
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(
@@ -119,7 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (value == null) {
                                 return 'kj,n,n,k';
                               }
-                            
                             },
                           ),
                         ),
@@ -130,18 +131,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         Center(
                             child: CommonButton(
                                 onselect: () {
-                               
-                                  if (formKey.currentState!
-                                      .validate()) {
-                                  
-
+                                  if (formKey.currentState!.validate()) {
                                     authProvider.loginByMobile(
                                       context: context,
                                       setState: setState,
                                     );
 
                                     // controller.login();
-                                    
                                   }
                                 },
                                 text: 'GET OTP')),
@@ -165,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Text(
                                 'Login with Email',
-                                style:TextConstant().textStyle,
+                                style: TextConstant().textStyle,
                               )),
                         ),
                         Center(
@@ -178,7 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>const RegisterScreen()));
+                                            builder: (context) =>
+                                                const RegisterScreen()));
                                   },
                                   child: Text(
                                     'Register',
@@ -193,10 +190,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Image.asset('assets/images/logo_image.png'))
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Image.asset('assets/images/logo_image.png'))
             ],
           ),
         ),

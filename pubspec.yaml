@@ -47,10 +47,12 @@ dependencies:
   group_button: ^5.3.4
   calendar_date_picker2: ^1.0.4
   flutter_rating_bar: ^4.0.1
+  google_places_flutter: ^2.0.8
+  google_maps_flutter: ^2.7.0
+  uuid: ^4.4.0
+  http: ^1.2.1
+ 
 
-  # geolocator: ^10.0.1
-  # google_places_flutter: ^2.0.8
-  # google_maps_flutter: ^2.7.0
 
 dev_dependencies:
   flutter_test:

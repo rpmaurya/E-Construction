@@ -1,9 +1,11 @@
 // buildscript {
-//    ext.kotlin_version = '1.7.1'
+//   ext.kotlin_version = '1.7.1'
 //     repositories {
-//         // google()
-//         // mavenCentral()
-//         // jcenter()
+//         google()
+        
+//         jcenter()
+//         mavenCentral()
+        
 //     }
 
 //     dependencies {

@@ -1,5 +1,5 @@
 import 'package:e_basket/Providers/CartManagementProvider.dart';
-import 'package:e_basket/Screens/Product_Management_Screen/wallet_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/wallet_screen.dart';
 import 'package:e_basket/common_file/BuyAndScubscribe_container.dart';
 import 'package:e_basket/common_file/common_button.dart';
 import 'package:e_basket/constant_file/color_constant.dart';

@@ -16,13 +16,14 @@ class EmailLoginScreen extends StatefulWidget {
 }
 
 class _EmailLoginScreenState extends State<EmailLoginScreen> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of(context, listen: false);
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SizedBox(
@@ -34,21 +35,24 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                 child: SizedBox(
                   width: size.width * 0.7,
                   child: Form(
-                    key:_formKey,
+                    key: _formKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(child: Text('E-Construction',style:TextConstant().logoText,)),
-
+                        Center(
+                            child: Text(
+                          'E-Construction',
+                          style: TextConstant().logoText,
+                        )),
                         SizedBox(
                           height: 50,
                         ),
                         Center(
                             child: Text(
                           'Login',
-                          style:TextConstant().loginText,
+                          style: TextConstant().loginText,
                         )),
                         SizedBox(
                           height: 20,
@@ -101,8 +105,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                         Center(
                             child: CommonButton(
                                 onselect: () {
-                                  if (_formKey.currentState!
-                                      .validate()) {
+                                  if (_formKey.currentState!.validate()) {
                                     authProvider.loginByEmail(
                                         context: context, setState: setState);
                                   }
@@ -127,7 +130,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                               },
                               child: Text(
                                 'Login with Phone Number',
-                                style:TextConstant().textStyle,
+                                style: TextConstant().textStyle,
                               )),
                         ),
                         Center(
@@ -141,7 +144,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                               const RegisterScreen()));
+                                                const RegisterScreen()));
                                   },
                                   child: Text(
                                     'Register',
@@ -155,11 +158,11 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   ),
                 ),
               ),
-               Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Image.asset('assets/images/logo_image.png'))
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Image.asset('assets/images/logo_image.png'))
             ],
           ),
         ),

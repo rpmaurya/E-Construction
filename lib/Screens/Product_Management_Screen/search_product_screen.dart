@@ -37,7 +37,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                 surfaceTintColor: Colors.transparent,
                 elevation: 0,
                 automaticallyImplyLeading: false,
-                expandedHeight: widget.visible == true ? 180.0 : 110.0,
+                expandedHeight: 100.0,
                 floating: false,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
@@ -171,309 +171,290 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                 ? const Center(
                     child: Text('No Data Found'),
                   )
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    child: ListView.builder(
-                        physics: const ScrollPhysics(),
-                        itemCount:
-                            widget.searchProductList?.data?.content?.length,
-                        itemBuilder: (context, index) {
-                          var getdat =
-                              (widget.searchProductList?.data?.content ?? []);
+                : ListView.builder(
+                    physics: const ScrollPhysics(),
+                    itemCount: widget.searchProductList?.data?.content?.length,
+                    itemBuilder: (context, index) {
+                      var getdat =
+                          (widget.searchProductList?.data?.content ?? []);
 
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 10, bottom: 10),
-                            child: Container(
-                              height: 230,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: ColorConstant().containerColor)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10),
+                        child: Container(
+                          height: 230,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: ColorConstant().containerColor)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.black12),
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              child: Image.network(
-                                                getdat[index].productImageUrl ??
-                                                    'https://5.imimg.com/data5/CT/IY/XK/GLADMIN-12/jcbe1.jpeg',
-                                                width: 150,
-                                                height: 150,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.black12),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Image.network(
+                                            getdat[index].productImageUrl ??
+                                                'https://5.imimg.com/data5/CT/IY/XK/GLADMIN-12/jcbe1.jpeg',
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                            child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              getdat[index].productName ?? '',
-                                              style:
-                                                  TextConstant().cardtitleText,
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              getdat[index].brandName ?? '',
-                                              style:
-                                                  TextConstant().cardtitleText,
-                                            ),
-                                            const SizedBox(
-                                              height: 60,
-                                            ),
-                                            Text(
-                                              '\u20B9${getdat[index].price}',
-                                              style: TextConstant().titleText,
-                                            )
-                                          ],
-                                        ))
-                                      ],
+                                      ),
                                     ),
-                                    Row(
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        cartmanagementprovider
-                                                        .cartProductListModel
-                                                        ?.data ==
-                                                    null ||
-                                                getdat[index]
-                                                        .userSelectedquantity ==
-                                                    null
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    quantity = getdat[index]
-                                                            .userSelectedquantity ??
-                                                        0;
-                                                  });
+                                        Text(
+                                          getdat[index].productName ?? '',
+                                          style: TextConstant().cardtitleText,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          getdat[index].brandName ?? '',
+                                          style: TextConstant().cardtitleText,
+                                        ),
+                                        const SizedBox(
+                                          height: 60,
+                                        ),
+                                        Text(
+                                          '\u20B9${getdat[index].price}',
+                                          style: TextConstant().titleText,
+                                        )
+                                      ],
+                                    ))
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    cartmanagementprovider.cartProductListModel
+                                                    ?.data ==
+                                                null ||
+                                            getdat[index]
+                                                    .userSelectedquantity ==
+                                                null
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                quantity = getdat[index]
+                                                        .userSelectedquantity ??
+                                                    0;
+                                              });
+                                              cartmanagementprovider
+                                                  .addToCart(
+                                                      context: context,
+                                                      setState: setState,
+                                                      productId:
+                                                          cartmanagementprovider
+                                                              .productListByCategoryId
+                                                              ?.data?[index]
+                                                              .id,
+                                                      quentity: ++quantity)
+                                                  .then((value) {
+                                                setState(() {
                                                   cartmanagementprovider
-                                                      .addToCart(
+                                                      .getProductList(
                                                           context: context,
                                                           setState: setState,
-                                                          productId:
-                                                              cartmanagementprovider
-                                                                  .productListByCategoryId
-                                                                  ?.data?[index]
-                                                                  .id,
-                                                          quentity: ++quantity)
-                                                      .then((value) {
-                                                    setState(() {
-                                                      cartmanagementprovider
-                                                          .getProductList(
-                                                              context: context,
-                                                              setState:
-                                                                  setState,
-                                                              categoryId: 0,
-                                                              subCategoryId: 0);
-                                                      cartmanagementprovider
-                                                          .getCartProductList(
-                                                              context: context,
-                                                              setState:
-                                                                  setState);
-                                                    });
-                                                  });
-                                                },
-                                                child: Container(
-                                                    width: 130,
-                                                    height: 30,
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.black87),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(25)),
-                                                    child: const Center(
-                                                        child: Text(
-                                                      'Buy Once',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ))),
-                                              )
-                                            : Container(
+                                                          categoryId: 0,
+                                                          subCategoryId: 0);
+                                                  cartmanagementprovider
+                                                      .getCartProductList(
+                                                          context: context,
+                                                          setState: setState);
+                                                });
+                                              });
+                                            },
+                                            child: Container(
                                                 width: 130,
                                                 height: 30,
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
-                                                        color: Colors.pink),
+                                                        color: Colors.black87),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             25)),
-                                                child: Center(
-                                                  child: Row(
-                                                    // mainAxisSize: MainAxisSize.max,
-                                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                          child:
-                                                              GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            quantity = getdat[
-                                                                        index]
-                                                                    .userSelectedquantity ??
-                                                                0;
-                                                          });
-                                                          cartmanagementprovider
-                                                              .updateCartProductList(
-                                                                  context:
-                                                                      context,
-                                                                  setState:
-                                                                      setState,
-                                                                  productId: cartmanagementprovider
+                                                child: const Center(
+                                                    child: Text(
+                                                  'Buy Once',
+                                                  textAlign: TextAlign.center,
+                                                ))),
+                                          )
+                                        : Container(
+                                            width: 130,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.pink),
+                                                borderRadius:
+                                                    BorderRadius.circular(25)),
+                                            child: Center(
+                                              child: Row(
+                                                // mainAxisSize: MainAxisSize.max,
+                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                      child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        quantity = getdat[index]
+                                                                .userSelectedquantity ??
+                                                            0;
+                                                      });
+                                                      cartmanagementprovider
+                                                          .updateCartProductList(
+                                                              context: context,
+                                                              setState:
+                                                                  setState,
+                                                              productId:
+                                                                  cartmanagementprovider
                                                                       .productListByCategoryId
                                                                       ?.data?[
                                                                           index]
                                                                       .id,
-                                                                  quentity:
-                                                                      --quantity)
-                                                              .then((value) {
-                                                            setState(() {
-                                                              cartmanagementprovider
-                                                                  .getProductList(
-                                                                      context:
-                                                                          context,
-                                                                      setState:
-                                                                          setState,
-                                                                      categoryId:
-                                                                          0,
-                                                                      subCategoryId:
-                                                                          0);
-                                                              cartmanagementprovider
-                                                                  .getCartProductList(
-                                                                      context:
-                                                                          context,
-                                                                      setState:
-                                                                          setState);
-                                                            });
-                                                          });
-                                                        },
-                                                        child: const Center(
-                                                            child: Icon(
-                                                                Icons.remove,
-                                                                color: Colors
-                                                                    .pink)),
-                                                      )),
-                                                      const Divider(),
-                                                      Expanded(
-                                                        child: Container(
-                                                            color: Colors.pink,
-                                                            child: Center(
-                                                                child: Text(
-                                                              '${getdat[index].userSelectedquantity ?? 0}',
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
-                                                            ))),
-                                                      ),
-                                                      const Divider(),
-                                                      Expanded(
-                                                          child:
-                                                              GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            quantity = getdat[
-                                                                        index]
-                                                                    .userSelectedquantity ??
-                                                                0;
-                                                          });
+                                                              quentity:
+                                                                  --quantity)
+                                                          .then((value) {
+                                                        setState(() {
                                                           cartmanagementprovider
-                                                              .updateCartProductList(
+                                                              .getProductList(
                                                                   context:
                                                                       context,
                                                                   setState:
                                                                       setState,
-                                                                  productId: cartmanagementprovider
-                                                                      .productListByCategoryId
-                                                                      ?.data?[
-                                                                          index]
-                                                                      .id,
-                                                                  quentity:
-                                                                      ++quantity)
-                                                              .then((value) {
-                                                            cartmanagementprovider
-                                                                .getProductList(
-                                                                    context:
-                                                                        context,
-                                                                    setState:
-                                                                        setState,
-                                                                    categoryId:
-                                                                        widget,
-                                                                    subCategoryId:
-                                                                        widget);
-                                                            cartmanagementprovider
-                                                                .getCartProductList(
-                                                                    context:
-                                                                        context,
-                                                                    setState:
-                                                                        setState);
-                                                            setState(() {});
-                                                          });
-                                                        },
-                                                        child: const Center(
-                                                            child: Icon(
-                                                          Icons.add,
-                                                          color: Colors.pink,
-                                                        )),
-                                                      ))
-                                                    ],
+                                                                  categoryId: 0,
+                                                                  subCategoryId:
+                                                                      0);
+                                                          cartmanagementprovider
+                                                              .getCartProductList(
+                                                                  context:
+                                                                      context,
+                                                                  setState:
+                                                                      setState);
+                                                        });
+                                                      });
+                                                    },
+                                                    child: const Center(
+                                                        child: Icon(
+                                                            Icons.remove,
+                                                            color:
+                                                                Colors.pink)),
+                                                  )),
+                                                  const Divider(),
+                                                  Expanded(
+                                                    child: Container(
+                                                        color: Colors.pink,
+                                                        child: Center(
+                                                            child: Text(
+                                                          '${getdat[index].userSelectedquantity ?? 0}',
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ))),
                                                   ),
-                                                ),
+                                                  const Divider(),
+                                                  Expanded(
+                                                      child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        quantity = getdat[index]
+                                                                .userSelectedquantity ??
+                                                            0;
+                                                      });
+                                                      cartmanagementprovider
+                                                          .updateCartProductList(
+                                                              context: context,
+                                                              setState:
+                                                                  setState,
+                                                              productId:
+                                                                  cartmanagementprovider
+                                                                      .productListByCategoryId
+                                                                      ?.data?[
+                                                                          index]
+                                                                      .id,
+                                                              quentity:
+                                                                  ++quantity)
+                                                          .then((value) {
+                                                        cartmanagementprovider
+                                                            .getProductList(
+                                                                context:
+                                                                    context,
+                                                                setState:
+                                                                    setState,
+                                                                categoryId:
+                                                                    widget,
+                                                                subCategoryId:
+                                                                    widget);
+                                                        cartmanagementprovider
+                                                            .getCartProductList(
+                                                                context:
+                                                                    context,
+                                                                setState:
+                                                                    setState);
+                                                        setState(() {});
+                                                      });
+                                                    },
+                                                    child: const Center(
+                                                        child: Icon(
+                                                      Icons.add,
+                                                      color: Colors.pink,
+                                                    )),
+                                                  ))
+                                                ],
                                               ),
-                                        // : cartbutton(cartmanagementprovider.cartProductListModel?.data?.cartResponseList![index].quantity??0),
-                                        Container(
-                                          width: 210,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                              color: Colors.pink[600],
-                                              borderRadius:
-                                                  BorderRadius.circular(25)),
-                                          child: const Center(
-                                              child: Text(
-                                            'Subscibe @ \u20B922',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            textAlign: TextAlign.center,
-                                          )),
-                                        )
-                                      ],
-                                    ),
+                                            ),
+                                          ),
+                                    // : cartbutton(cartmanagementprovider.cartProductListModel?.data?.cartResponseList![index].quantity??0),
+                                    Container(
+                                      width: 210,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.pink[600],
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      child: const Center(
+                                          child: Text(
+                                        'Subscibe @ \u20B922',
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                    )
                                   ],
                                 ),
-                              ),
+                              ],
                             ),
-                          );
-                        }),
-                  ),
+                          ),
+                        ),
+                      );
+                    }),
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: cartmanagementprovider.cartProductListModel?.data ==

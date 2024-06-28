@@ -1,5 +1,7 @@
+import 'package:e_basket/common_file/custom_location.dart';
 import 'package:e_basket/common_file/location_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -15,7 +17,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
       appBar: AppBar(
         title: Text('data'),
       ),
-      // body: LocationPicker(),
+      // body: GoogleMap(
+      //   initialCameraPosition: CameraPosition(
+      //       target: LatLng(37.42796133580664, -122.085749655962), zoom: 20),
+      // ),
+      body: CustomLocation(),
     );
   }
 }
