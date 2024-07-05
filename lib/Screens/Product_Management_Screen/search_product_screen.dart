@@ -47,7 +47,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                     children: [
                       AppBar(
                         centerTitle: true,
-                        title: Text('E-Construction'),
+                        title: Text('Go build'),
                         actions: [
                           IconButton(onPressed: () {}, icon: Icon(Icons.search))
                         ],

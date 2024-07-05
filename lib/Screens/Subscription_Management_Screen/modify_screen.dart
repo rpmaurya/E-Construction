@@ -38,10 +38,10 @@ class _ModifyScreenState extends State<ModifyScreen> {
   bool visible = false;
   String? startdate;
   String? enddate;
-  String? startDate =
-      DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
-  String? endDate =
-      DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
+  String? startDate;
+
+  String? endDate;
+  // DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
   String defaultdate =
       DateFormat.yMMMEd().format(DateTime.now().add(Duration(days: 1)));
   @override
@@ -50,10 +50,16 @@ class _ModifyScreenState extends State<ModifyScreen> {
     super.initState();
     quentity = widget.quentity;
     subscriptionId = widget.subscriptionId;
+    startDate =
+        DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
+    endDate =
+        DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 2)));
+    enddate = DateFormat.yMMMEd().format(DateTime.now().add(Duration(days: 2)));
   }
 
   @override
   Widget build(BuildContext context) {
+    print('object$endDate');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:e_basket/constant_file/Url.dart';
 import 'package:e_basket/models/AddSubscriptionModel.dart';
+import 'package:e_basket/models/BaseResponse.dart';
 import 'package:e_basket/models/DeleteSubscriptionModel.dart';
 import 'package:e_basket/models/GetSubscriptionModel.dart';
 import 'package:e_basket/models/ProductSubscriptionModel.dart';
@@ -27,12 +28,14 @@ class Subscriptionservice {
 
       var subscriptionresp = ProductSubscriptionModel.fromJson(response?.data);
       return subscriptionresp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -56,12 +59,14 @@ class Subscriptionservice {
       print({'response..subscription': response?.data});
       var resp = UpdateSubscriptionModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -82,12 +87,14 @@ class Subscriptionservice {
       print({'response..subscription': response?.data});
       var resp = AddSubscriptionModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -108,12 +115,14 @@ class Subscriptionservice {
       print({'response..subscription': response?.data});
       var resp = ResumeSubscriptionModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -134,12 +143,14 @@ class Subscriptionservice {
       print({'response..subscription': response?.data});
       var resp = DeleteSubscriptionModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -160,12 +171,14 @@ class Subscriptionservice {
       print({'response..subscription': response?.data});
       var resp = DeleteSubscriptionModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -186,12 +199,14 @@ class Subscriptionservice {
       print({'response..subscription': response?.data});
       var resp = GetSubscriptionModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }

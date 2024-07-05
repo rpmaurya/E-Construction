@@ -1,8 +1,11 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/common_file/common_button.dart';
+import 'package:e_basket/common_file/custom_dropdown.dart';
 import 'package:e_basket/common_file/custom_textfield.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -15,12 +18,57 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formkey = GlobalKey<FormState>();
+  AuthProvider authProvider = AuthProvider();
+  static const kGoogleApiKey = "AIzaSyADRdiTbSYUR8oc6-ryM1F1NDNjkHDr0Yo";
+
+  String? _timeZoneName;
+  double? _timeZoneOffset;
+
+  double? lat;
+  double? lng;
+  @override
+  void initState() {
+    // authProvider.getLocation(context: context, setState: setState);
+    // TODO: implement initState
+    super.initState();
+    _getTimeZone();
+  }
+
+  double convertDurationToDouble(Duration duration) {
+    // Get the total number of hours from the duration
+    int totalHours = duration.inHours;
+
+    // Get the remaining minutes and convert to fraction of an hour
+    int remainingMinutes = duration.inMinutes.remainder(60);
+    double fractionOfHour = remainingMinutes / 60.0;
+
+    // Combine the total hours and fraction of an hour
+    double totalHoursWithFraction = totalHours + fractionOfHour;
+
+    return totalHoursWithFraction;
+  }
+
+  void _getTimeZone() async {
+    DateTime dateTime = DateTime.now();
+    String timeZoneName = dateTime.timeZoneName;
+    Duration timeZoneOffset = dateTime.timeZoneOffset;
+    // String timeZone = _printDuration(timeZoneOffset);
+    double timeeeeee = convertDurationToDouble(timeZoneOffset);
+    print('double in time...$timeeeeee');
+    setState(() {
+      _timeZoneName = timeZoneName;
+      _timeZoneOffset = timeeeeee;
+      print('timezonename...$_timeZoneName');
+      print('timezonoffnn...$_timeZoneOffset');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of(context, listen: false);
+    // AuthProvider authProvider = Provider.of(context, listen: false);
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      // backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Edit Profile'),
         centerTitle: true,
@@ -37,7 +85,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 40,
                     ),
                     CustomTextfield(
-                      fillColor: Colors.white,
+                      // fillColor: Colors.white,
                       controller: authProvider.firstName,
                       hintText: 'Enter First Name',
                       validator: (value) {
@@ -51,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 20,
                     ),
                     CustomTextfield(
-                      fillColor: Colors.white,
+                      // fillColor: Colors.white,
                       controller: authProvider.lastName,
                       hintText: 'Enter Last Name',
                       validator: (value) {
@@ -65,7 +113,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 20,
                     ),
                     CustomTextfield(
-                      fillColor: Colors.white,
+                      // fillColor: Colors.white,
                       controller: authProvider.email,
                       hintText: 'Enter Your Email',
                       validator: (value) {
@@ -76,13 +124,42 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       },
                     ),
                     SizedBox(
+                      height: 10,
+                    ),
+
+                    customautocomplete(authProvider.locationController),
+                    // Container(
+                    //   // margin: EdgeInsets.only(left: 40, right: 40),
+                    //   child: CustomDropdown(
+                    //       hintText: 'select location',
+                    //       items: (authProvider.locationModel?.data ?? [])
+                    //           .map(
+                    //             (e) => '${e.location}',
+                    //           )
+                    //           .toList(),
+                    //       onChanged: (value) {
+                    //         setState(() {
+                    //           authProvider.locationModel?.data!
+                    //               .where((e) => e.location == value)
+                    //               .map((e) =>
+                    //                   authProvider.locationId = e.locationId)
+                    //               .toSet();
+                    //           print({'adreeee': authProvider.locationId});
+                    //         });
+                    //       }),
+                    // ),
+                    SizedBox(
                       height: 20,
                     ),
                     CommonButton(
                         onselect: () {
                           if (_formkey.currentState!.validate()) {
                             authProvider.editProfileById(
-                                context: context, setState: setState);
+                                context: context,
+                                setState: setState,
+                                lat: lat,
+                                lng: lng,
+                                timeZone: _timeZoneOffset);
                           }
                         },
                         text: 'Submit')
@@ -90,6 +167,69 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             )),
+      ),
+    );
+  }
+
+  customautocomplete(TextEditingController controller) {
+    return Container(
+      child: GooglePlaceAutoCompleteTextField(
+        textEditingController: controller,
+        googleAPIKey: kGoogleApiKey,
+        debounceTime: 800,
+        focusNode: FocusNode(),
+
+        countries: ["in", "fr"],
+        itemBuilder: (context, index, Prediction prediction) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            padding: EdgeInsets.all(15),
+            child: Row(
+              children: [
+                Icon(Icons.location_on),
+                SizedBox(
+                  width: 7,
+                ),
+                Expanded(child: Text("${prediction.description ?? ""}"))
+              ],
+            ),
+          );
+        },
+        inputDecoration: InputDecoration(
+            // filled: true,
+            // fillColor: Colors.white,
+            hintText: 'Select location',
+            border: InputBorder.none,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 10)),
+        isLatLngRequired: true, // if you required coordinates from place detail
+        getPlaceDetailWithLatLng: (Prediction prediction) async {
+          // this method will return latlng with place detail
+          print("placeDetails" + prediction.lng.toString());
+          print("placeDetails" + prediction.lat.toString());
+          if (prediction.lat != null && prediction.lng != null) {
+            lat = double.tryParse('${prediction.lat}') ?? 0.0;
+            lng = double.tryParse('${prediction.lng}') ?? 0.0;
+            // await getTimeZone(lat, lng);
+            // print('object...time');
+          }
+        },
+        itemClick: (Prediction prediction) {
+          setState(() {
+            controller.text = prediction.description ?? '';
+            controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: prediction.description?.length ?? 0));
+          });
+        },
+        seperatedBuilder: Divider(
+          height: 0,
+        ),
+        // want to show close icon
+        isCrossBtnShown: true,
+        // optional container padding
+        containerHorizontalPadding: 10,
       ),
     );
   }

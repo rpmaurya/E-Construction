@@ -215,8 +215,8 @@ class HttpService<T> {
     //     message = null;
     //   }
     // }
-    message = errorResponse?.msg;
-    responseStatusCode = errorResponse?.status;
+    message = errorResponse?.status?.message;
+    responseStatusCode = int.parse(errorResponse?.status?.httpCode ?? '');
     switch (this.responseStatusCode) {
       case 200:
         // Fluttertoast.showToast(msg: kStringSomethingWentWrong);
@@ -235,7 +235,7 @@ class HttpService<T> {
         // bad request
         // print({"error 400": error.response.data["message"]});
         if (message != null) {
-          Fluttertoast.showToast(msg: message);
+          Fluttertoast.showToast(msg: message, backgroundColor: Colors.red);
           break;
         } else {
           Fluttertoast.showToast(msg: kStringBadRequest);

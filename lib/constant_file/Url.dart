@@ -1,5 +1,5 @@
 const String kUrlBase =
-    // "https://fb42-2405-201-4041-caf9-30f4-e425-9e24-6965.ngrok-free.app/";
+//  "https://608c-49-36-138-207.ngrok-free.app/";
     "http://ebasket.ap-south-1.elasticbeanstalk.com/";
 const String kRegisterEndUrl = "users/register_user";
 const String kLoginByMobileUrl = 'users/login_by_mobile';
@@ -32,3 +32,8 @@ const String kResumeSubscriptionEndUrl =
     'subscription/resume_subscription_temporarily';
 const String kDeleteSubscriptionEndUrl = 'subscription/delete_subscription';
 const String kPauseSubscriptionEndUrl = 'subscription/pause_subscription';
+const String kLocationEndUrl = 'users/get_locations';
+const String kPlaceOrderEndUrl = 'order/place_order_once';
+const String kGetWalletEndUrl = 'wallet/getWallet';
+const String kAddWalletEndUrl = 'wallet/addMoney';
+const String kVerifyWalletEndUrl = 'wallet/verifyPayment';

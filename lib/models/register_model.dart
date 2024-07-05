@@ -38,6 +38,11 @@
 //   String? mobileNo;
 //   String? countryCode;
 //   bool? validUser;
+//   dynamic lon;
+//   dynamic lat;
+//   dynamic timeZone;
+//   int? locationId;
+//   String? location;
 //   bool? active;
 //   int? createdAt;
 //   dynamic updatedAt;
@@ -51,6 +56,11 @@
 //     this.mobileNo,
 //     this.countryCode,
 //     this.validUser,
+//     this.lon,
+//     this.lat,
+//     this.timeZone,
+//     this.locationId,
+//     this.location,
 //     this.active,
 //     this.createdAt,
 //     this.updatedAt,
@@ -65,6 +75,11 @@
 //         mobileNo: json["mobileNo"],
 //         countryCode: json["countryCode"],
 //         validUser: json["validUser"],
+//         lon: json["lon"],
+//         lat: json["lat"],
+//         timeZone: json["timeZone"],
+//         locationId: json["locationId"],
+//         location: json["location"],
 //         active: json["active"],
 //         createdAt: json["createdAt"],
 //         updatedAt: json["updatedAt"],
@@ -79,6 +94,11 @@
 //         "mobileNo": mobileNo,
 //         "countryCode": countryCode,
 //         "validUser": validUser,
+//         "lon": lon,
+//         "lat": lat,
+//         "timeZone": timeZone,
+//         "locationId": locationId,
+//         "location": location,
 //         "active": active,
 //         "createdAt": createdAt,
 //         "updatedAt": updatedAt,
@@ -152,6 +172,7 @@ class Data {
   double? lon;
   double? lat;
   double? timeZone;
+  dynamic locationId;
   String? location;
   bool? active;
   int? createdAt;
@@ -169,6 +190,7 @@ class Data {
     this.lon,
     this.lat,
     this.timeZone,
+    this.locationId,
     this.location,
     this.active,
     this.createdAt,
@@ -187,6 +209,7 @@ class Data {
         lon: json["lon"]?.toDouble(),
         lat: json["lat"]?.toDouble(),
         timeZone: json["timeZone"]?.toDouble(),
+        locationId: json["locationId"],
         location: json["location"],
         active: json["active"],
         createdAt: json["createdAt"],
@@ -205,6 +228,7 @@ class Data {
         "lon": lon,
         "lat": lat,
         "timeZone": timeZone,
+        "locationId": locationId,
         "location": location,
         "active": active,
         "createdAt": createdAt,

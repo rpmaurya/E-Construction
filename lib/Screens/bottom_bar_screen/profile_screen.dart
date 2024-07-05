@@ -97,7 +97,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     builder: (context) => EditProfileScreen(
                                           userId:
                                               authProvider.userModel?.data?.id,
-                                        )));
+                                        ))).then((value) {
+                              authProvider.getUserById(
+                                  context: context, setState: setState);
+                            });
                           },
                           child: Container(
                             width: 60,
@@ -125,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextConstant().titleText,
                       ),
                       subtitle: Text(
-                        'H-15,Rise tower,Sector- 62,Noida uttar pradesh ',
+                        authProvider.userModel?.data?.location ?? '',
                         style: TextConstant().subtitleText,
                       ),
                       trailing: Icon(Icons.keyboard_arrow_right_outlined),

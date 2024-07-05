@@ -1,10 +1,13 @@
+import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Providers/CartManagementProvider.dart';
+import 'package:e_basket/Screens/Product_Management_Screen/order_successful_screen.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/wallet_screen.dart';
 import 'package:e_basket/common_file/BuyAndScubscribe_container.dart';
 import 'package:e_basket/common_file/common_button.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class PlaceorderScreen extends StatefulWidget {
@@ -16,6 +19,7 @@ class PlaceorderScreen extends StatefulWidget {
 
 class _PlaceorderScreenState extends State<PlaceorderScreen> {
   Cartmanagementprovider cartmanagementprovider = Cartmanagementprovider();
+  AuthProvider authProvider = AuthProvider();
   int quantity = 0;
   @override
   void initState() {
@@ -23,6 +27,7 @@ class _PlaceorderScreenState extends State<PlaceorderScreen> {
     super.initState();
     cartmanagementprovider.getCartProductList(
         context: context, setState: setState);
+    authProvider.getUserById(context: context, setState: setState);
   }
 
   @override
@@ -333,66 +338,87 @@ class _PlaceorderScreenState extends State<PlaceorderScreen> {
                     child: ListTile(
                       leading: Icon(Icons.home),
                       title: Text('Deliver Address'),
-                      subtitle: Text('sector 62 noida up'),
+                      subtitle:
+                          Text('${authProvider.userModel?.data?.location}'),
                       trailing: Icon(Icons.keyboard_arrow_down),
                     ),
                   ),
                   Divider(),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 55,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                              color: Colors.white,
-                              child: Center(
-                                  child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/cart_icon.png',
-                                    height: 24,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '\u20B9 ${cartmanagementprovider.cartProductListModel?.data?.orderSummary?.totalPrice}',
-                                        style: TextConstant().cardtitleText,
-                                      ),
-                                      Text(
-                                        '${cartmanagementprovider.cartProductListModel?.data?.orderSummary?.totalQuantity} item',
-                                        style: TextConstant().subtitleText,
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ))),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              showdailog(context);
-                            },
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 55,
+                      child: Row(
+                        children: [
+                          Expanded(
                             child: Container(
-                                color: Colors.pink,
+                                color: Colors.white,
                                 child: Center(
-                                    child: Text(
-                                  'Place Order',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/cart_icon.png',
+                                      height: 24,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '\u20B9 ${cartmanagementprovider.cartProductListModel?.data?.orderSummary?.totalPrice}',
+                                          style: TextConstant().cardtitleText,
+                                        ),
+                                        Text(
+                                          '${cartmanagementprovider.cartProductListModel?.data?.orderSummary?.totalQuantity} item',
+                                          style: TextConstant().subtitleText,
+                                        )
+                                      ],
+                                    )
+                                  ],
                                 ))),
                           ),
-                        )
-                      ],
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                // showdailog(context);
+                                cartmanagementprovider
+                                    .placeOrder(
+                                        context: context, setState: setState)
+                                    .then((value) {
+                                  if (value == true) {
+                                    Fluttertoast.showToast(
+                                        backgroundColor: Colors.green,
+                                        msg: 'order successfull');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OrderSuccessfulScreen()));
+                                  } else {
+                                    showdailog(context);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                  color: Colors.pink,
+                                  child: Center(
+                                      child: Text(
+                                    'Place Order',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                  ))),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

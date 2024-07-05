@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharepreferencClass {
-  saveUser(token, userId) async {
+  saveUser(String token, int userId) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString('token', token);
     await pref.setInt('userId', userId);

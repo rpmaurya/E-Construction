@@ -1,20 +1,20 @@
-// buildscript {
-//   ext.kotlin_version = '1.7.1'
-//     repositories {
-//         google()
+buildscript {
+  ext.kotlin_version = '2.0.0'
+    repositories {
+        google()
         
-//         jcenter()
-//         mavenCentral()
+    
+        mavenCentral()
         
-//     }
+    }
 
-//     dependencies {
-//         classpath 'com.android.tools.build:gradle:3.2.1' // Make sure this is compatible with your project
-//         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2' // Make sure this is compatible with your project
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
        
       
-//     }
-// }
+    }
+}
 
 allprojects {
     repositories {

@@ -5,8 +5,10 @@ import 'package:e_basket/Screens/login_screen/login_screen.dart';
 import 'package:e_basket/Screens/login_screen/otp_verify_screen.dart';
 import 'package:e_basket/models/BrandListModel.dart';
 import 'package:e_basket/models/GetTopProductModel.dart';
+import 'package:e_basket/models/LocationModel.dart';
 import 'package:e_basket/models/categoryList_Model.dart';
 import 'package:e_basket/models/login_model.dart';
+import 'package:e_basket/models/otp_verify_model.dart';
 import 'package:e_basket/models/user-model.dart';
 import 'package:e_basket/services/AuthService.dart';
 import 'package:e_basket/utils/sharepreferences_file.dart';
@@ -25,17 +27,22 @@ class AuthProvider with ChangeNotifier {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  int? locationId;
   Authservice authservice = Authservice();
   UserModel? userModel;
   CategoryListModel? categoryListModel;
   BrandListModel? brandListModel;
   GetTopProductModel? getTopProductModel;
-
+  LocationModel? locationModel;
   bool isLoding = false;
 
   Future registerUser({
     required BuildContext context,
     required Function setState,
+    required lat,
+    required lng,
+    required timezone,
   }) async {
     setState(() {
       isLoding = true;
@@ -45,6 +52,10 @@ class AuthProvider with ChangeNotifier {
       "lastName": lastNameController.text,
       "email": userEmail.text,
       "mobileNo": phoneNumber.text,
+      "lat": lat,
+      "lon": lng,
+      "timezone": timezone,
+      "location": locationController.text,
       "countryCode": "91"
     };
     print({'body...': body});
@@ -115,23 +126,27 @@ class AuthProvider with ChangeNotifier {
       setState(() {
         isLoding = true;
       });
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
       await authservice
           .otpVerifyByMobile(body: body, context: context, setState: setState)
           .then((value) {
         if (value?.status?.httpCode == '200') {
-          SharepreferencClass().clearData();
-          SharepreferencClass()
-              .saveUser(value?.data?.token, value?.data?.userId);
+          // SharepreferencClass().clearData();
+          // SharepreferencClass()
+          //     .saveUser(value?.data?.token ?? '', value?.data?.userId ?? 0);
+          sharedPreferences.setInt('userId', value?.data?.userId ?? 0);
+          sharedPreferences.setString('token', value?.data?.token ?? '');
           Fluttertoast.showToast(
               msg: value?.status?.message ?? '',
               backgroundColor: Colors.green,
               textColor: Colors.white);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const BottomBarScreen()));
+          notifyListeners();
           setState(() {
             isLoding = false;
           });
-          notifyListeners();
         }
       });
     } catch (e) {
@@ -171,7 +186,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> otpVerifyByEmail(
+  Future<OtpVerifyModel?> otpVerifyByEmail(
       {required BuildContext context, required setState, required data}) async {
     Map<String, dynamic> body = {"email": data, "otp": otpController.text};
     print({'otpverification...': body});
@@ -179,38 +194,37 @@ class AuthProvider with ChangeNotifier {
       setState(() {
         isLoding = true;
       });
-      await authservice
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var resp = await authservice
           .otpVerifyEmail(body: body, context: context, setState: setState)
-          .then((value) {
-        if (value?.status?.httpCode == '200') {
-          SharepreferencClass().clearData();
-          SharepreferencClass()
-              .saveUser(value?.data?.token, value?.data?.userId);
-          Fluttertoast.showToast(
-              msg: value?.status?.message ?? '',
-              backgroundColor: Colors.green,
-              textColor: Colors.white);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const BottomBarScreen()));
+          .then((onValue) {
+        if (onValue?.status?.httpCode == '200') {
+          // SharepreferencClass().clearData();
+          sharedPreferences.setInt('userId', onValue?.data?.userId ?? 0);
+          sharedPreferences.setString('token', onValue?.data?.token ?? '');
+          // SharepreferencClass()
+          //     .saveUser(onValue?.data?.token ?? '', onValue?.data?.userId ?? 0);
           notifyListeners();
           setState(() {
             isLoding = false;
           });
+          return onValue;
         }
       });
+      return resp;
     } catch (e) {
       print({'object': e});
     }
+    return null;
   }
 
-  Future<void> getUserById({
-    required BuildContext context,
-    required setState,
-  }) async {
+  Future<void> getUserById(
+      {required BuildContext context, required setState, userId}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var getid = pref.getInt('userId');
 
-    Map<String, dynamic> query = {"userId": getid};
+    Map<String, dynamic> query = {"userId": getid ?? userId};
     print({'getid...': query});
     try {
       setState(() {
@@ -222,6 +236,8 @@ class AuthProvider with ChangeNotifier {
         if (value?.status?.httpCode == '200') {
           setState(() {
             userModel = value;
+            notifyListeners();
+
             isLoding = false;
           });
         }
@@ -231,17 +247,23 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> editProfileById({
-    required BuildContext context,
-    required setState,
-  }) async {
+  Future<void> editProfileById(
+      {required BuildContext context,
+      required setState,
+      required lat,
+      required lng,
+      required timeZone}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var getid = pref.getInt('userId');
 
     Map<String, dynamic> body = {
       "firstName": firstName.text,
       "lastName": lastName.text,
-      "email": email.text
+      "email": email.text,
+      "lat": lat,
+      "lon": lng,
+      "timezone": timeZone,
+      "location": locationController.text
     };
     print({'getid...': body});
     try {
@@ -338,6 +360,31 @@ class AuthProvider with ChangeNotifier {
         if (value?.status?.httpCode == '200') {
           setState(() {
             getTopProductModel = value;
+            isLoding = false;
+            notifyListeners();
+          });
+        }
+      });
+    } catch (e) {
+      print({'object': e});
+    }
+  }
+
+  Future<void> getLocation({
+    required BuildContext context,
+    required setState,
+  }) async {
+    try {
+      setState(() {
+        isLoding = true;
+      });
+      await authservice
+          .getLocationApi(context: context, setState: setState)
+          .then((value) {
+        if (value?.status?.httpCode == '200') {
+          setState(() {
+            locationModel = value;
+
             isLoding = false;
             notifyListeners();
           });

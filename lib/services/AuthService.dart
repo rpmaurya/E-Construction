@@ -4,6 +4,7 @@ import 'package:e_basket/constant_file/Url.dart';
 import 'package:e_basket/models/BaseResponse.dart';
 import 'package:e_basket/models/BrandListModel.dart';
 import 'package:e_basket/models/GetTopProductModel.dart';
+import 'package:e_basket/models/LocationModel.dart';
 import 'package:e_basket/models/categoryList_Model.dart';
 import 'package:e_basket/models/login_model.dart';
 import 'package:e_basket/models/otp_verify_model.dart';
@@ -29,16 +30,19 @@ class Authservice {
         body: body);
     try {
       Response<dynamic>? response = await http.request<dynamic>();
+
       print({'response..': response?.data});
 
       var registerModel = RegisterModel.fromJson(response?.data);
       return registerModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -60,12 +64,14 @@ class Authservice {
 
       var loginModel = LoginModel.fromJson(response?.data);
       return loginModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -90,16 +96,13 @@ class Authservice {
       var otpVerifyModel = OtpVerifyModel.fromJson(response?.data);
       return otpVerifyModel;
     } on DioException catch (error) {
-      var otpVerifyModel = OtpVerifyModel.fromJson(error.response?.data);
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
-      //  http.handleErrorResponse(
-      //     context: context,
-      //     error: error,
-      //   );
-      Fluttertoast.showToast(
-          msg: 'Your ${otpVerifyModel.status?.message}',
-          backgroundColor: Colors.red,
-          textColor: Colors.white);
+      http.handleErrorResponse(
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -122,12 +125,14 @@ class Authservice {
 
       var loginModel = LoginModel.fromJson(response?.data);
       return loginModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -151,12 +156,14 @@ class Authservice {
 
       var otpVerifyModel = OtpVerifyModel.fromJson(response?.data);
       return otpVerifyModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -178,12 +185,14 @@ class Authservice {
 
       var userModel = UserModel.fromJson(response?.data);
       return userModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -206,12 +215,14 @@ class Authservice {
 
       var userModel = UserModel.fromJson(response?.data);
       return userModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -233,12 +244,14 @@ class Authservice {
 
       var categoryListModel = CategoryListModel.fromJson(response?.data);
       return categoryListModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -260,12 +273,14 @@ class Authservice {
 
       var brandListModel = BrandListModel.fromJson(response?.data);
       return brandListModel;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }
@@ -285,12 +300,41 @@ class Authservice {
 
       var resp = GetTopProductModel.fromJson(response?.data);
       return resp;
-    } catch (error) {
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
       print({'error..': error});
       http.handleErrorResponse(
-        context: context,
-        error: error,
-      );
+          context: context, error: error, errorResponse: baseResponseModel);
+    }
+    return null;
+  }
+
+  Future<LocationModel?> getLocationApi(
+      {required BuildContext context, required Function setState}) async {
+    var http = HttpService(
+      isAuthorizeRequest: false,
+      baseURL: kUrlBase,
+      endURL: kLocationEndUrl,
+      methodType: HttpMethodType.GET,
+      bodyType: HttpBodyType.JSON,
+    );
+    try {
+      Response<dynamic>? response = await http.request<dynamic>();
+      print({'response..': response?.data});
+
+      var resp = LocationModel.fromJson(response?.data);
+      return resp;
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
+      print({'error..': error});
+      http.handleErrorResponse(
+          context: context, error: error, errorResponse: baseResponseModel);
     }
     return null;
   }

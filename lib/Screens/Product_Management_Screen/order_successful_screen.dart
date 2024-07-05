@@ -1,43 +1,42 @@
-import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
-class SuccessSubscribeScreen extends StatefulWidget {
-  final DateTime startedDate;
-  const SuccessSubscribeScreen({super.key, required this.startedDate});
+class OrderSuccessfulScreen extends StatefulWidget {
+  const OrderSuccessfulScreen({
+    super.key,
+  });
 
   @override
-  State<SuccessSubscribeScreen> createState() => _SuccessSubscribeScreenState();
+  State<OrderSuccessfulScreen> createState() => _OrderSuccessfulScreenState();
 }
 
-class _SuccessSubscribeScreenState extends State<SuccessSubscribeScreen> {
+class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
+  String defaultdate =
+      DateFormat.yMMMEd().format(DateTime.now().add(Duration(days: 1)));
   bool forAndorid = false;
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    String startedDate = DateFormat.yMMMMd().format(widget.startedDate);
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
             icon: Icon(Icons.close)),
-        title: Text('Your Subscription Successfull'),
+        title: Text('Your Order is Placed'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Container(
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -53,20 +52,25 @@ class _SuccessSubscribeScreenState extends State<SuccessSubscribeScreen> {
                       height: 10,
                     ),
                     Text(
-                      'Your Subscription will start from $startedDate',
+                      'Your Order will be delivered on $defaultdate',
                       style:
                           TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      'Please Recharge Your Wallet for uninterrupted service',
-                      style:
-                          TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                    Divider(),
+                    const ListTile(
+                      leading: Icon(Icons.badge),
+                      title: Text('Hang a bag on your door'),
+                      subtitle: Text(
+                        "Don't forget to hang a bag on your door every day. This is ensure that the items will remain fresh and intact",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w400),
+                      ),
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 10,
                     ),
                   ],
                 ),
@@ -157,79 +161,9 @@ class _SuccessSubscribeScreenState extends State<SuccessSubscribeScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                'How its works',
-                style: TextConstant().lableText,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(5)),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    message(
-                        Icon(
-                          Icons.badge,
-                          color: Colors.orange,
-                        ),
-                        'Hang a bag on your door',
-                        "Dont't forgot hang a bag on your door everyday.This will ensure that the items will remain fresh and intact"),
-                    Divider(),
-                    message(
-                        Icon(
-                          Icons.wallet,
-                          color: Colors.deepOrange[300],
-                        ),
-                        'Prepad Wallet Service',
-                        "Dont't forgot hang a bag on your door everyday.This will ensure that the items will remain fresh and intact"),
-                    Divider(),
-                    message(
-                        Icon(
-                          Icons.monetization_on,
-                          color: Colors.deepOrangeAccent,
-                        ),
-                        'Reserve Money',
-                        "Dont't forgot hang a bag on your door everyday.This will ensure that the items will remain fresh and intact")
-                  ],
-                ),
-              ),
-            )
           ],
         ),
       ),
-    );
-  }
-
-  message(Widget icon, String title, String subtitle) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        icon,
-        SizedBox(
-          width: 10,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextConstant().cardTitle,
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(fontSize: 12),
-              )
-            ],
-          ),
-        )
-      ],
     );
   }
 }

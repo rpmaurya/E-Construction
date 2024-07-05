@@ -1,24 +1,26 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/bottom_bar_screen.dart';
 import 'package:e_basket/common_file/common_button.dart';
 import 'package:e_basket/common_file/common_screen.dart';
 import 'package:e_basket/models/user-model.dart';
+import 'package:e_basket/utils/sharepreferences_file.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-
 class Otpverifybyprofilescreen extends StatefulWidget {
-  
   final UserModel? editResp;
-  const Otpverifybyprofilescreen({super.key,this.editResp});
+  const Otpverifybyprofilescreen({super.key, this.editResp});
 
   @override
-  State<Otpverifybyprofilescreen> createState() => _OtpverifybyprofilescreenState();
+  State<Otpverifybyprofilescreen> createState() =>
+      _OtpverifybyprofilescreenState();
 }
 
 class _OtpverifybyprofilescreenState extends State<Otpverifybyprofilescreen> {
   final _formKey = GlobalKey<FormState>();
-    AuthProvider authProvider = AuthProvider();
+  AuthProvider authProvider = AuthProvider();
   UserModel? getdata;
   @override
   void initState() {
@@ -26,23 +28,25 @@ class _OtpverifybyprofilescreenState extends State<Otpverifybyprofilescreen> {
     super.initState();
     getdata = widget.editResp;
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
-  
+
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-   
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
-              CommonScreen(),
+              // CommonScreen(),
               Center(
                 child: SizedBox(
                   width: size.width * 0.7,
@@ -121,18 +125,34 @@ class _OtpverifybyprofilescreenState extends State<Otpverifybyprofilescreen> {
                       Center(
                           child: CommonButton(
                               onselect: () {
-                                if (_formKey.currentState!
-                                    .validate()) {
-                               
+                                if (_formKey.currentState!.validate()) {
                                   if (getdata?.data?.email != null) {
                                     print({
                                       'otp screen for email':
                                           getdata?.data?.email
                                     });
-                                    authProvider.otpVerifyByEmail(
-                                        context: context,
-                                        setState: setState,
-                                        data: getdata?.data?.email);
+                                    authProvider
+                                        .otpVerifyByEmail(
+                                            context: context,
+                                            setState: setState,
+                                            data: getdata?.data?.email)
+                                        .then((value) {
+                                      if (value?.status?.httpCode == '200') {
+                                        Fluttertoast.showToast(
+                                            msg: value?.status?.message ?? '',
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white);
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const BottomBarScreen()),
+                                          (Route<dynamic> route) => false,
+                                        );
+                                        // Navigator.pop(context);
+                                        // Navigator.pop(context);
+                                      }
+                                    });
                                   } else if (getdata?.data?.mobileNo != null) {
                                     print({
                                       'otp verify with mob':
@@ -143,15 +163,18 @@ class _OtpverifybyprofilescreenState extends State<Otpverifybyprofilescreen> {
                                         setState: setState,
                                         data: getdata?.data?.mobileNo);
                                   }
-                                  
                                 }
-                              
                               },
                               text: 'SUBMIT')),
                     ],
                   ),
                 ),
-              )
+              ),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Image.asset('assets/images/logo_image.png'))
             ],
           ),
         ),

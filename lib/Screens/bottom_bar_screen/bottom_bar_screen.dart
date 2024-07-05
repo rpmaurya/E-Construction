@@ -1,3 +1,4 @@
+import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/OrderScreen.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/dashboard_screen.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/help_screen.dart';
@@ -6,7 +7,8 @@ import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:flutter/material.dart';
 
 class BottomBarScreen extends StatefulWidget {
-  const BottomBarScreen({super.key});
+  final int? userid;
+  const BottomBarScreen({super.key, this.userid});
 
   @override
   State<BottomBarScreen> createState() => _BottomBarScreenState();
@@ -14,10 +16,20 @@ class BottomBarScreen extends StatefulWidget {
 
 class _BottomBarScreenState extends State<BottomBarScreen> {
   ColorConstant colorConstant = ColorConstant();
+  AuthProvider authProvider = AuthProvider();
+  int? userId;
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    authProvider.getUserById(
+        context: context, setState: setState, userId: widget.userid);
+  }
+
+  List<Widget> widgetOptions = [
     DashboardScreen(),
     Orderscreen(),
     WalletScreen(),
@@ -34,7 +46,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

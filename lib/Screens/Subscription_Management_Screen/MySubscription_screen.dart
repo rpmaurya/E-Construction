@@ -31,6 +31,7 @@ class _MysubscriptionScreenState extends State<MysubscriptionScreen> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context, true);

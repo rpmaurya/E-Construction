@@ -1,20 +1,24 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/bottom_bar_screen.dart';
 import 'package:e_basket/common_file/common_button.dart';
 import 'package:e_basket/common_file/common_screen.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:e_basket/models/login_model.dart';
 import 'package:e_basket/models/user-model.dart';
+import 'package:e_basket/utils/sharepreferences_file.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
-   final String subtitle;
+  final String subtitle;
   final LoginModel? resp;
   final UserModel? editResp;
-  const OtpVerifyScreen({super.key,required this.subtitle, this.resp, this.editResp });
+  const OtpVerifyScreen(
+      {super.key, required this.subtitle, this.resp, this.editResp});
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
@@ -22,20 +26,22 @@ class OtpVerifyScreen extends StatefulWidget {
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   final _formKey = GlobalKey<FormState>();
-   AuthProvider authProvider = AuthProvider();
-    LoginModel? getdata;
-    @override
+  AuthProvider authProvider = AuthProvider();
+  LoginModel? getdata;
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getdata=widget.resp;
+    getdata = widget.resp;
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
-  
+
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     //  AuthProvider authProvider = Provider.of(context, listen: false);
@@ -55,8 +61,11 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                        Center(child: Text('E-Construction',style:TextConstant().logoText,)),
-
+                      Center(
+                          child: Text(
+                        'E-Construction',
+                        style: TextConstant().logoText,
+                      )),
                       SizedBox(
                         height: 60,
                       ),
@@ -64,7 +73,9 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           child: Text(
                         'Otp Verification',
                         style: GoogleFonts.roboto(
-                              fontSize: 32, fontWeight: FontWeight.w500,color: ColorConstant().textColor),
+                            fontSize: 32,
+                            fontWeight: FontWeight.w500,
+                            color: ColorConstant().textColor),
                       )),
                       SizedBox(
                         height: 10,
@@ -81,7 +92,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         key: _formKey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: PinCodeTextField(
-                     
                           keyboardType: TextInputType.number,
                           enableActiveFill: true,
                           cursorColor: Colors.black,
@@ -100,16 +110,20 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                               borderWidth: 1,
                               activeBorderWidth: 1,
                               inactiveBorderWidth: 1,
-                              activeBoxShadow: [  BoxShadow(
-        offset: Offset(2, 4),
-        blurRadius: 2,
-        color: Colors.black.withOpacity(0.3),
-      )],
-      inActiveBoxShadow: [  BoxShadow(
-        offset: Offset(2, 4),
-        blurRadius: 2,
-        color: Colors.black.withOpacity(0.3),
-      )],
+                              activeBoxShadow: [
+                                BoxShadow(
+                                  offset: Offset(2, 4),
+                                  blurRadius: 2,
+                                  color: Colors.black.withOpacity(0.3),
+                                )
+                              ],
+                              inActiveBoxShadow: [
+                                BoxShadow(
+                                  offset: Offset(2, 4),
+                                  blurRadius: 2,
+                                  color: Colors.black.withOpacity(0.3),
+                                )
+                              ],
                               selectedFillColor: Colors.white,
                               shape: PinCodeFieldShape.box,
                               inactiveFillColor: Colors.white,
@@ -137,21 +151,35 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       Center(
                           child: CommonButton(
                               onselect: () {
-                                if (_formKey.currentState!
-                                    .validate()) {
-                               
-
-
-
+                                if (_formKey.currentState!.validate()) {
                                   if (getdata?.data?.email != null) {
                                     print({
                                       'otp screen for email':
                                           getdata?.data?.email
                                     });
-                                    authProvider.otpVerifyByEmail(
-                                        context: context,
-                                        setState: setState,
-                                        data: getdata?.data?.email);
+                                    authProvider
+                                        .otpVerifyByEmail(
+                                            context: context,
+                                            setState: setState,
+                                            data: getdata?.data?.email)
+                                        .then((value) {
+                                      if (value?.status?.httpCode == '200') {
+                                        print(
+                                            "userid..response,,,,....${value?.data?.userId}");
+                                        Fluttertoast.showToast(
+                                            msg: value?.status?.message ?? '',
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BottomBarScreen(
+                                                      userid:
+                                                          value?.data?.userId,
+                                                    )));
+                                      }
+                                    });
                                   } else if (getdata?.data?.mobileNo != null) {
                                     print({
                                       'otp verify with mob':
@@ -164,17 +192,16 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                   }
                                 }
                               },
-                              
                               text: 'SUBMIT')),
                     ],
                   ),
                 ),
               ),
-               Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Image.asset('assets/images/logo_image.png'))
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Image.asset('assets/images/logo_image.png'))
             ],
           ),
         ),

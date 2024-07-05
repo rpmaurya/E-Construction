@@ -66,7 +66,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                     borderSide: const BorderSide(color: Color(0xFFCDCDCD))),
                 hintText: widget.hintText,
                 enabled: true,
-                hintStyle: TextConstant().filterText,
+                hintStyle: TextConstant().lableText,
                 suffixIcon: isOpen
                     ? Icon(Icons.keyboard_arrow_up)
                     : Icon(Icons.keyboard_arrow_down)),
@@ -87,56 +87,59 @@ class _CustomDropdownState extends State<CustomDropdown> {
             },
           ),
         ),
-        if (isOpen)
-          Visibility(
-            visible: isOpen,
-            child: Container(
-              constraints: BoxConstraints(maxHeight: 250),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(10)),
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                // physics: PageScrollPhysics(),
-                primary: true,
-                shrinkWrap: true,
-                children: widget.items
-                    .map((e) => InkWell(
-                          onTap: () {
-                            widget.onChanged(e);
+        // if (isOpen)
+        Visibility(
+          visible: isOpen,
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 250),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              // physics: PageScrollPhysics(),
+              primary: true,
+              shrinkWrap: true,
+              children: widget.items
+                  .map((e) => InkWell(
+                        onTap: () {
+                          widget.onChanged(e);
 
-                            setState(() {
-                              // widget.selectedValue = e;
-                              // print({'Selected value..': widget.selectedValue});
-                              isOpen = false;
-                              controller.text = e;
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(2),
-                            decoration: controller.text == e
-                                ? BoxDecoration(
-                                    border:
-                                        Border.all(color: Color(0xFFBF5F0B)),
-                                    borderRadius: BorderRadius.circular(10))
-                                : BoxDecoration(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(e),
-                                  if (controller.text == e) Icon(Icons.check)
-                                ],
-                              ),
+                          setState(() {
+                            // widget.selectedValue = e;
+                            // print({'Selected value..': widget.selectedValue});
+                            isOpen = false;
+                            controller.text = e;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(2),
+                          decoration: controller.text == e
+                              ? BoxDecoration(
+                                  border: Border.all(color: Color(0xFFBF5F0B)),
+                                  borderRadius: BorderRadius.circular(10))
+                              : BoxDecoration(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    e,
+                                    style: TextConstant().lableText,
+                                  ),
+                                ),
+                                if (controller.text == e) Icon(Icons.check)
+                              ],
                             ),
                           ),
-                        ))
-                    .toList(),
-              ),
+                        ),
+                      ))
+                  .toList(),
             ),
           ),
+        ),
       ],
     );
   }

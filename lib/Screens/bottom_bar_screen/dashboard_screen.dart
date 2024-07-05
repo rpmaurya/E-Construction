@@ -14,7 +14,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  final int? userid;
+  const DashboardScreen({super.key, this.userid});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -28,6 +29,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    widget.userid;
+    _fetchData();
+  }
+
+  void _fetchData() {
+    authProvider.getUserById(context: context, setState: setState);
     authProvider.getCategoryList(context: context, setState: setState);
     authProvider.getBrandList(context: context, setState: setState);
     authProvider.getTopProduct(context: context, setState: setState);
@@ -59,7 +66,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           style: TextConstant().subtitleText,
                         ),
                         Text(
-                          'Gobuild',
+                          '${authProvider.userModel?.data?.firstName ?? 'Go'} ${authProvider.userModel?.data?.lastName ?? 'Build'}',
                           style: TextConstant().textStyle,
                         ),
                         SizedBox(
@@ -72,7 +79,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               Icon(Icons.location_on_outlined),
                               Expanded(
                                   child: Text(
-                                'H-15,Rise Tower,sector-63 noida uttar pradesh',
+                                authProvider.userModel?.data?.location ?? '',
                                 style: TextConstant().drawersubtitle,
                               ))
                             ],
@@ -85,9 +92,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ListTile(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProfileScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileScreen()))
+                        .then((value) {
+                      authProvider.getUserById(
+                          context: context, setState: setState);
+                    });
                   },
                   leading: Icon(Icons.account_circle_outlined),
                   title: Text(
@@ -218,7 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       leading: const Icon(Icons.search),
                       hintText: 'search..',
                       hintStyle:
-                          const WidgetStatePropertyAll(TextStyle(fontSize: 20)),
+                          const WidgetStatePropertyAll(TextStyle(fontSize: 16)),
                       onChanged: (value) {
                         print({'Search Value..': value});
                       },
@@ -334,124 +345,165 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ]),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
-                  SizedBox(
-                    height: 15,
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Categories',
+                          style: TextConstant().cardTitle,
+                        ),
+                        const Text(
+                          'All',
+                          style: TextStyle(
+                              color: Color(0xFFBF5F0B),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 365,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Categories',
-                                style: TextConstant().cardTitle,
-                              ),
-                              const Text(
-                                'All',
-                                style: TextStyle(
-                                    color: Color(0xFFBF5F0B),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              )
-                            ],
+
+                  (authProvider.categoryListModel?.data?.content ?? []).isEmpty
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: ColorConstant().containerColor,
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            height: 320,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5, right: 5),
-                              child: (authProvider.categoryListModel?.data
-                                              ?.content ??
-                                          [])
-                                      .isEmpty
-                                  ? Center(
-                                      child: CircularProgressIndicator(
-                                        color: ColorConstant().containerColor,
-                                      ),
-                                    )
-                                  : GridView.builder(
-                                      physics: ScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                              maxCrossAxisExtent: 180,
-                                              childAspectRatio: 1.1,
-                                              crossAxisSpacing: 20,
-                                              mainAxisSpacing: 5),
-                                      itemCount: authProvider.categoryListModel
-                                          ?.data?.content?.length,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProductManagementScreen(
-                                                          categoryId: authProvider
-                                                                  .categoryListModel
-                                                                  ?.data
-                                                                  ?.content?[
-                                                                      index]
-                                                                  .categoryId ??
-                                                              0,
-                                                          titleName: authProvider
-                                                              .categoryListModel
-                                                              ?.data
-                                                              ?.content?[index]
-                                                              .categoryName,
-                                                          subCategoryId: null,
-                                                          visible: true,
-                                                        )));
-                                          },
-                                          child: Container(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  child: Image.network(
-                                                    authProvider
-                                                            .categoryListModel
-                                                            ?.data
-                                                            ?.content?[index]
-                                                            .imageurl ??
-                                                        'https://tse4.mm.bing.net/th?id=OIP.8vtlhiG0ozEzXbDlax-91gAAAA&pid=Api&P=0&h=220',
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  authProvider
-                                                          .categoryListModel
-                                                          ?.data
-                                                          ?.content?[index]
-                                                          .categoryName ??
-                                                      '',
-                                                  style: TextConstant()
-                                                      .cardtitleText,
-                                                )
-                                              ],
+                        )
+                      : Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(10),
+                          child: Wrap(
+                            spacing: 20,
+                            runSpacing: 20,
+                            children: []..addAll([
+                                ...authProvider
+                                        .categoryListModel?.data?.content ??
+                                    []
+                              ].map((getdata) {
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductManagementScreen(
+                                                  categoryId:
+                                                      getdata.categoryId ?? 0,
+                                                  titleName:
+                                                      getdata.categoryName,
+                                                  subCategoryId: null,
+                                                  visible: true,
+                                                )));
+                                  },
+                                  child: SizedBox(
+                                    height: 150,
+                                    width: 165,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: SizedBox(
+                                            width: 165,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: Image.network(
+                                                getdata.imageurl ??
+                                                    'https://tse4.mm.bing.net/th?id=OIP.8vtlhiG0ozEzXbDlax-91gAAAA&pid=Api&P=0&h=220',
+                                                fit: BoxFit.fill,
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      }),
-                            ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          getdata.categoryName ?? '',
+                                          style: TextConstant().cardtitleText,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })),
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                  // : GridView.builder(
+                  //     physics: ScrollPhysics(),
+                  //     gridDelegate:
+                  //         const SliverGridDelegateWithMaxCrossAxisExtent(
+                  //             maxCrossAxisExtent: 180,
+                  //             childAspectRatio: 1.1,
+                  //             crossAxisSpacing: 20,
+                  //             mainAxisSpacing: 5),
+                  //     itemCount: authProvider
+                  //         .categoryListModel?.data?.content?.length,
+                  //     itemBuilder: (context, index) {
+//  return InkWell(
+//                                 onTap: () {
+//                                   Navigator.push(
+//                                       context,
+//                                       MaterialPageRoute(
+//                                           builder: (context) =>
+//                                               ProductManagementScreen(
+//                                                 categoryId: authProvider
+//                                                         .categoryListModel
+//                                                         ?.data
+//                                                         ?.content?[index]
+//                                                         .categoryId ??
+//                                                     0,
+//                                                 titleName: authProvider
+//                                                     .categoryListModel
+//                                                     ?.data
+//                                                     ?.content?[index]
+//                                                     .categoryName,
+//                                                 subCategoryId: null,
+//                                                 visible: true,
+//                                               )));
+//                                 },
+//                                 child: Container(
+//                                   child: Column(
+//                                     crossAxisAlignment:
+//                                         CrossAxisAlignment.start,
+//                                     children: [
+//                                       ClipRRect(
+//                                         borderRadius:
+//                                             BorderRadius.circular(5),
+//                                         child: Image.network(
+//                                           authProvider
+//                                                   .categoryListModel
+//                                                   ?.data
+//                                                   ?.content?[index]
+//                                                   .imageurl ??
+//                                               'https://tse4.mm.bing.net/th?id=OIP.8vtlhiG0ozEzXbDlax-91gAAAA&pid=Api&P=0&h=220',
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       ),
+//                                       const SizedBox(
+//                                         height: 10,
+//                                       ),
+//                                       Text(
+//                                         authProvider
+//                                                 .categoryListModel
+//                                                 ?.data
+//                                                 ?.content?[index]
+//                                                 .categoryName ??
+//                                             '',
+//                                         style: TextConstant().cardtitleText,
+//                                       )
+//                                     ],
+//                                   ),
+//                                 ),
+//                               );
+                  //     }),
+                  const SizedBox(
+                    height: 5,
                   ),
                   SizedBox(
                     height: 150,

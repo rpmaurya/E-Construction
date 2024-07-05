@@ -245,8 +245,9 @@ class Subscriptionprovider with ChangeNotifier {
         if (value?.status?.httpCode == '200') {
           setState(() {
             getSubscriptionModel = value;
-            isLoding = false;
+
             notifyListeners();
+            isLoding = false;
           });
         }
       });
