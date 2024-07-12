@@ -13,6 +13,7 @@ class PausesubscriptionScreen extends StatefulWidget {
   final int quentity;
   final int subscriptionId;
   final bool visible;
+  final DateTime? startDateTime;
   const PausesubscriptionScreen(
       {super.key,
       required this.imageUrl,
@@ -21,7 +22,8 @@ class PausesubscriptionScreen extends StatefulWidget {
       required this.quentity,
       required this.price,
       required this.subscriptionId,
-      required this.visible});
+      required this.visible,
+      required this.startDateTime});
 
   @override
   State<PausesubscriptionScreen> createState() =>
@@ -35,10 +37,10 @@ class _PausesubscriptionScreenState extends State<PausesubscriptionScreen> {
   // bool visible = false;
   String? startdate;
   String? enddate;
-  String? startDate =
-      DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
-  String? endDate =
-      DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
+  String? startDate;
+
+  String? endDate;
+
   String defaultdate =
       DateFormat.yMMMEd().format(DateTime.now().add(Duration(days: 1)));
   @override
@@ -47,10 +49,21 @@ class _PausesubscriptionScreenState extends State<PausesubscriptionScreen> {
     super.initState();
     quentity = widget.quentity;
     subscriptionId = widget.subscriptionId;
+    startdate = DateFormat.yMMMEd()
+        .format(widget.startDateTime ?? DateTime.now().add(Duration(days: 1)));
+    enddate = DateFormat.yMMMEd().format(
+        widget.startDateTime?.add(Duration(days: 1)) ??
+            DateTime.now().add(Duration(days: 1)));
+    startDate = DateFormat('yyyy-MM-dd')
+        .format(widget.startDateTime ?? DateTime.now().add(Duration(days: 1)));
+    endDate = DateFormat('yyyy-MM-dd').format(
+        widget.startDateTime?.add(Duration(days: 1)) ??
+            DateTime.now().add(Duration(days: 1)));
   }
 
   @override
   Widget build(BuildContext context) {
+    print('stdate.....${widget.startDateTime}');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
@@ -175,7 +188,7 @@ class _PausesubscriptionScreenState extends State<PausesubscriptionScreen> {
                     style: TextConstant().subtitleText,
                   ),
                   Text(
-                    defaultdate,
+                    '$startdate',
                     style: TextConstant().cardtitleText,
                   )
                 ],
@@ -248,9 +261,10 @@ class _PausesubscriptionScreenState extends State<PausesubscriptionScreen> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         // currentDate: DateTime.now().add(Duration(days: 1)),
-        initialDate: DateTime.now().add(const Duration(days: 1)),
-        firstDate: DateTime
-            .now(), //DateTime.now() - not to allow to choose before today.
+        initialDate: widget.startDateTime,
+        firstDate: widget.startDateTime ??
+            DateTime
+                .now(), //DateTime.now() - not to allow to choose before today.
         lastDate: DateTime.now().add(Duration(days: 60)));
 
     if (pickedDate != null) {
@@ -274,9 +288,10 @@ class _PausesubscriptionScreenState extends State<PausesubscriptionScreen> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         // currentDate: DateTime.now().add(Duration(days: 1)),
-        initialDate: DateTime.now().add(const Duration(days: 1)),
-        firstDate: DateTime
-            .now(), //DateTime.now() - not to allow to choose before today.
+        initialDate: widget.startDateTime?.add(Duration(days: 1)),
+        firstDate: widget.startDateTime?.add(Duration(days: 1)) ??
+            DateTime
+                .now(), //DateTime.now() - not to allow to choose before today.
         lastDate: DateTime.now().add(Duration(days: 60)));
 
     if (pickedDate != null) {

@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.4"
+  carousel_calendar:
+    dependency: "direct main"
+    description:
+      name: carousel_calendar
+      sha256: a5547d69c638c73b8e1746dcf8b486dbe8641400b90143333b184f4657b56b7e
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   carousel_slider:
     dependency: "direct main"
     description:
@@ -797,6 +805,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_calendar:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_calendar
+      sha256: ad7a98aee73ab3d01819320e43458af4870f5a4acad4b54df9e4f0938feac064
+      url: "https://pub.dev"
+    source: hosted
+    version: "26.1.40+1"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "87cbeee9b916e013eedbd43bf07f253c34dd5184c88325e5227434e0f8b89a68"
+      url: "https://pub.dev"
+    source: hosted
+    version: "26.1.40"
+  syncfusion_flutter_datepicker:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_datepicker
+      sha256: ebc10c86618a8c410f4707dc6ff354daccb13d5f8a65f5fffa69a07806e4e0dd
+      url: "https://pub.dev"
+    source: hosted
+    version: "26.1.40"
   table_calendar:
     dependency: "direct main"
     description:
@@ -821,6 +853,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      sha256: a6ccda4a69a442098b602c44e61a1e2b4bf6f5516e875bbf0f427d5df14745d5
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.3"
   typed_data:
     dependency: transitive
     description:

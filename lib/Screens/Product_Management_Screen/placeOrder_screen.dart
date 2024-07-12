@@ -464,7 +464,9 @@ class _PlaceorderScreenState extends State<PlaceorderScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => WalletScreen()));
+                              builder: (context) => WalletScreen(
+                                    sendOnPage: 'viewCart',
+                                  )));
                     },
                     child: Container(
                       height: 40,

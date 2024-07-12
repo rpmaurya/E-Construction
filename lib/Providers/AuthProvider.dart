@@ -275,16 +275,29 @@ class AuthProvider with ChangeNotifier {
               body: body, userId: getid, context: context, setState: setState)
           .then((value) {
         if (value?.status?.httpCode == '200') {
-          Fluttertoast.showToast(
-              backgroundColor: Colors.green,
-              msg: '${value?.status?.message}',
-              textColor: Colors.white);
-          Navigator.push(
+          if (email.text == userModel?.data?.email) {
+            Fluttertoast.showToast(
+                backgroundColor: Colors.green,
+                msg: '${value?.status?.message}',
+                textColor: Colors.white);
+            Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(
-                  builder: (context) => Otpverifybyprofilescreen(
-                        editResp: value,
-                      )));
+              MaterialPageRoute(builder: (context) => const BottomBarScreen()),
+              (Route<dynamic> route) => false,
+            );
+          } else {
+            Fluttertoast.showToast(
+                backgroundColor: Colors.green,
+                msg: 'otp sent successfully',
+                textColor: Colors.white);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Otpverifybyprofilescreen(
+                          editResp: value,
+                        )));
+          }
+
           setState(() {
             isLoding = false;
           });
@@ -299,7 +312,11 @@ class AuthProvider with ChangeNotifier {
     required BuildContext context,
     required setState,
   }) async {
-    Map<String, dynamic> query = {"pageNumber": 0, "pageSize": 6};
+    Map<String, dynamic> query = {
+      "pageNumber": 0,
+      "pageSize": 10,
+      'search': null
+    };
 
     try {
       setState(() {

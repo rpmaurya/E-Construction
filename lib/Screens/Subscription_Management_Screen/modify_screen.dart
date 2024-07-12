@@ -16,6 +16,7 @@ class ModifyScreen extends StatefulWidget {
   final int quentity;
   final int subscriptionId;
   final bool temporary;
+  final DateTime? startDate;
   const ModifyScreen(
       {super.key,
       required this.titleName,
@@ -25,7 +26,8 @@ class ModifyScreen extends StatefulWidget {
       required this.price,
       required this.quentity,
       required this.subscriptionId,
-      required this.temporary});
+      required this.temporary,
+      this.startDate});
 
   @override
   State<ModifyScreen> createState() => _ModifyScreenState();
@@ -50,16 +52,22 @@ class _ModifyScreenState extends State<ModifyScreen> {
     super.initState();
     quentity = widget.quentity;
     subscriptionId = widget.subscriptionId;
-    startDate =
-        DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1)));
-    endDate =
-        DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 2)));
-    enddate = DateFormat.yMMMEd().format(DateTime.now().add(Duration(days: 2)));
+    startdate = DateFormat.yMMMEd()
+        .format(widget.startDate ?? DateTime.now().add(Duration(days: 2)));
+
+    startDate = DateFormat('yyyy-MM-dd')
+        .format(widget.startDate ?? DateTime.now().add(Duration(days: 1)));
+    endDate = DateFormat('yyyy-MM-dd').format(
+        widget.startDate?.add(Duration(days: 1)) ??
+            DateTime.now().add(Duration(days: 2)));
+    enddate = DateFormat.yMMMEd().format(
+        widget.startDate?.add(Duration(days: 1)) ??
+            DateTime.now().add(Duration(days: 2)));
   }
 
   @override
   Widget build(BuildContext context) {
-    print('object$endDate');
+    print('object${widget.startDate}');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
@@ -284,8 +292,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                           onTap: () async {
                             pickdate(context);
                           },
-                          child: datecontainer(
-                              'From Date', startdate ?? defaultdate),
+                          child: datecontainer('From Date ', '${startdate}'),
                         ),
                         Divider(
                           height: 0,
@@ -417,9 +424,10 @@ class _ModifyScreenState extends State<ModifyScreen> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         // currentDate: DateTime.now().add(Duration(days: 1)),
-        initialDate: DateTime.now().add(const Duration(days: 1)),
-        firstDate: DateTime
-            .now(), //DateTime.now() - not to allow to choose before today.
+        initialDate: widget.startDate,
+        firstDate: widget.startDate ??
+            DateTime
+                .now(), //DateTime.now() - not to allow to choose before today.
         lastDate: DateTime.now().add(Duration(days: 60)));
 
     if (pickedDate != null) {
@@ -443,9 +451,10 @@ class _ModifyScreenState extends State<ModifyScreen> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         // currentDate: DateTime.now().add(Duration(days: 1)),
-        initialDate: DateTime.now().add(const Duration(days: 1)),
-        firstDate: DateTime
-            .now(), //DateTime.now() - not to allow to choose before today.
+        initialDate: widget.startDate?.add(Duration(days: 1)),
+        firstDate: widget.startDate?.add(Duration(days: 1)) ??
+            DateTime
+                .now(), //DateTime.now() - not to allow to choose before today.
         lastDate: DateTime.now().add(Duration(days: 60)));
 
     if (pickedDate != null) {

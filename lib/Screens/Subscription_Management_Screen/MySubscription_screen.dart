@@ -250,6 +250,10 @@ class _MysubscriptionScreenState extends State<MysubscriptionScreen> {
                                                                               .subscriptionId ??
                                                                           0,
                                                                   visible: true,
+                                                                  startDateTime:
+                                                                      getdata?[
+                                                                              index]
+                                                                          .startDate,
                                                                 ))).then(
                                                         (value) {
                                                       subscriptionprovider
@@ -377,6 +381,9 @@ class _MysubscriptionScreenState extends State<MysubscriptionScreen> {
                                                                 .subscriptionId ??
                                                             0,
                                                         temporary: true,
+                                                        startDate:
+                                                            getdata?[index]
+                                                                .startDate,
                                                       );
                                                     })).then((value) {
                                                       subscriptionprovider
@@ -572,6 +579,9 @@ class _MysubscriptionScreenState extends State<MysubscriptionScreen> {
                                                                             0,
                                                                     visible:
                                                                         true,
+                                                                    startDateTime:
+                                                                        getdata?[index]
+                                                                            .startDate,
                                                                   ))).then(
                                                           (value) {
                                                         subscriptionprovider
@@ -638,6 +648,9 @@ class _MysubscriptionScreenState extends State<MysubscriptionScreen> {
                                                               .subscriptionId ??
                                                           0,
                                                       visible: false,
+                                                      startDateTime:
+                                                          getdata?[index]
+                                                              .startDate,
                                                     ))).then((value) {
                                           subscriptionprovider.getSubscription(
                                               context: context,

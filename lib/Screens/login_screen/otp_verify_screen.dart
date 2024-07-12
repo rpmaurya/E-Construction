@@ -38,13 +38,17 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-
+    // authProvider.otpController.text = '';
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (getdata?.data?.otp != null) {
+      authProvider.otpController.text = getdata?.data?.otp ?? '';
+    }
     //  AuthProvider authProvider = Provider.of(context, listen: false);
+
     var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -95,6 +99,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           keyboardType: TextInputType.number,
                           enableActiveFill: true,
                           cursorColor: Colors.black,
+                          blinkWhenObscuring: true,
+                          blinkDuration: Duration(seconds: 500),
                           appContext: context,
                           length: 4,
                           onChanged: (value) {

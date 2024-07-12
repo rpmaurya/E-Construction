@@ -1,6 +1,5 @@
-const String kUrlBase =
-//  "https://608c-49-36-138-207.ngrok-free.app/";
-    "http://ebasket.ap-south-1.elasticbeanstalk.com/";
+const String kUrlBase = "https://d1c6-49-36-138-98.ngrok-free.app/";
+// "http://ebasket.ap-south-1.elasticbeanstalk.com/";
 const String kRegisterEndUrl = "users/register_user";
 const String kLoginByMobileUrl = 'users/login_by_mobile';
 const String kOtpVerifyByMobEndUrl = "users/mobile_verification";
@@ -37,3 +36,7 @@ const String kPlaceOrderEndUrl = 'order/place_order_once';
 const String kGetWalletEndUrl = 'wallet/getWallet';
 const String kAddWalletEndUrl = 'wallet/addMoney';
 const String kVerifyWalletEndUrl = 'wallet/verifyPayment';
+const String kMyOrderListEndUrl = 'order/get_orders';
+const String kRechargeHistoryEndUrl = 'wallet/getWalletTransactions';
+const String kGetBillingHistoryEndUrl = 'billingHistory/get_billing_History';
+const String kGetBillingDetailsEndUrl = 'billingHistory/get_billing_details';

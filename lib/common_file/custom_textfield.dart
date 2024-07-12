@@ -1,4 +1,3 @@
-
 import 'package:e_basket/constant_file/text_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +16,8 @@ class CustomTextfield extends StatefulWidget {
   final bool? enabled;
   final Widget? suffixIcons;
   final Color? fillColor;
+  final FocusNode? focusNode;
+  final double? width;
 
   const CustomTextfield(
       {super.key,
@@ -32,7 +33,9 @@ class CustomTextfield extends StatefulWidget {
       this.suffixIcons,
       this.fillColor,
       this.onChanged,
-      this.enabled});
+      this.enabled,
+      this.focusNode,
+      this.width});
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -42,7 +45,9 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: widget.width,
       child: TextFormField(
+        focusNode: widget.focusNode,
         obscureText: widget.obscureText ?? false,
         controller: widget.controller,
         inputFormatters: [

@@ -1,11 +1,11 @@
-import 'package:e_basket/models/AddMoneyModel.dart';
 import 'package:e_basket/models/CartProductListModel.dart';
-import 'package:e_basket/models/GetWalletModel.dart';
+
+import 'package:e_basket/models/MyOrderListModel.dart';
 import 'package:e_basket/models/ProductListByCategoryIdModel.dart';
 import 'package:e_basket/models/SearchProductListModel.dart';
 import 'package:e_basket/models/SubcategoryModel.dart';
 import 'package:e_basket/models/UpdateProductListModel.dart';
-import 'package:e_basket/models/VerifyWalletModel.dart';
+
 import 'package:e_basket/services/CartManagementService.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +18,8 @@ class Cartmanagementprovider with ChangeNotifier {
   // CartResponseList?cartResponseList;
   UpdateProductListModel? updateProductListModel;
   SearchProductListModel? searchProductListModel;
-  GetWalletModel? getWalletModel;
+
+  MyOrderListModel? myOrderListModel;
   var isLoding = false;
   Future<ProductListByCategoryIdModel?> getProductList(
       {required BuildContext context,
@@ -234,13 +235,14 @@ class Cartmanagementprovider with ChangeNotifier {
     return null;
   }
 
-  Future<void> getWallet({
-    required BuildContext context,
-    required setState,
-  }) async {
+  Future<void> getMyoredrList(
+      {required BuildContext context,
+      required setState,
+      required selectedDate}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var getid = pref.getInt('userId');
     Map<String, dynamic> query = {
+      'date': selectedDate,
       'userId': getid,
     };
     print({'query of subcategory id': query});
@@ -249,11 +251,11 @@ class Cartmanagementprovider with ChangeNotifier {
         isLoding = true;
       });
       await cartmanagementservice
-          .getWalletApi(query: query, context: context, setState: setState)
+          .getMyOrderListApi(query: query, context: context, setState: setState)
           .then((value) {
         if (value?.status?.httpCode == '200') {
           setState(() {
-            getWalletModel = value;
+            myOrderListModel = value;
             notifyListeners();
             isLoding = false;
           });
@@ -262,55 +264,5 @@ class Cartmanagementprovider with ChangeNotifier {
     } catch (e) {
       print({'object': e});
     }
-  }
-
-  Future<AddMoneyModel?> addWalletMoney({
-    required BuildContext context,
-    required setState,
-    required amount,
-  }) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var getid = pref.getInt('userId');
-    Map<String, dynamic> body = {"userId": getid, "amount": amount};
-    print({'query of subcategory id': body});
-    try {
-      setState(() {
-        isLoding = true;
-      });
-      var resp = await cartmanagementservice.addWalletApi(
-          body: body, context: context, setState: setState);
-      return resp;
-    } catch (e) {
-      print({'object': e});
-    }
-    return null;
-  }
-
-  Future<VerifyWalletModel?> verifyWalletMoney(
-      {required BuildContext context,
-      required setState,
-      required razorpayId,
-      required paymentId,
-      required razorpaySignature}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var getid = pref.getInt('userId');
-    Map<String, dynamic> body = {
-      "userId": getid.toString(),
-      "razorpayId": razorpayId,
-      "paymentId": paymentId,
-      "razorpaySignature": razorpaySignature
-    };
-    print({'query of subcategory id': body});
-    try {
-      setState(() {
-        isLoding = true;
-      });
-      var resp = await cartmanagementservice.verifyWalletApi(
-          body: body, context: context, setState: setState);
-      return resp;
-    } catch (e) {
-      print({'object': e});
-    }
-    return null;
   }
 }

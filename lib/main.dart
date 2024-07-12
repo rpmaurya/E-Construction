@@ -1,6 +1,7 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Providers/CartManagementProvider.dart';
 import 'package:e_basket/Providers/SubscriptionProvider.dart';
+import 'package:e_basket/Providers/WalletProvider.dart';
 import 'package:e_basket/Screens/starting_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Cartmanagementprovider>(
             create: (BuildContext context) => Cartmanagementprovider()),
         ChangeNotifierProvider<Subscriptionprovider>(
-            create: (BuildContext context) => Subscriptionprovider())
+            create: (BuildContext context) => Subscriptionprovider()),
+        ChangeNotifierProvider<Walletprovider>(
+            create: (BuildContext context) => Walletprovider())
       ],
       child: MaterialApp(
           title: 'Flutter Demo',

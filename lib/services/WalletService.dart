@@ -2,85 +2,23 @@ import 'package:dio/dio.dart';
 import 'package:e_basket/constant_file/Url.dart';
 import 'package:e_basket/models/AddMoneyModel.dart';
 import 'package:e_basket/models/BaseResponse.dart';
-import 'package:e_basket/models/CartProductListModel.dart';
+import 'package:e_basket/models/GetBillingDeatilsModel.dart';
+import 'package:e_basket/models/GetBillingModel.dart';
 import 'package:e_basket/models/GetWalletModel.dart';
-import 'package:e_basket/models/MyOrderListModel.dart';
-import 'package:e_basket/models/ProductListByCategoryIdModel.dart';
-import 'package:e_basket/models/SearchProductListModel.dart';
-import 'package:e_basket/models/SubcategoryModel.dart';
-import 'package:e_basket/models/UpdateProductListModel.dart';
+import 'package:e_basket/models/RechargeHistoryModel.dart';
 import 'package:e_basket/models/VerifyWalletModel.dart';
 import 'package:e_basket/services/httpService.dart';
 import 'package:flutter/material.dart';
 
-class Cartmanagementservice {
-  Future<ProductListByCategoryIdModel?> getProductListApi(
+class Walletservice {
+  Future<GetWalletModel?> getWalletApi(
       {required Map<String, dynamic> query,
       required BuildContext context,
       required Function setState}) async {
     var http = HttpService(
         isAuthorizeRequest: false,
         baseURL: kUrlBase,
-        endURL: kGetProductListEndUrl,
-        methodType: HttpMethodType.GET,
-        bodyType: HttpBodyType.JSON,
-        queryParameters: query);
-    try {
-      Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..product of categoryid': response?.data});
-
-      var productListModel =
-          ProductListByCategoryIdModel.fromJson(response?.data);
-      return productListModel;
-    } on DioException catch (error) {
-      BaseResponseModel baseResponseModel =
-          BaseResponseModel.fromJson(error.response?.data);
-      print(baseResponseModel.status?.message);
-
-      print({'error..': error});
-      http.handleErrorResponse(
-          context: context, error: error, errorResponse: baseResponseModel);
-    }
-    return null;
-  }
-
-  Future<SubCategoryModel?> getSubCategoryListApi(
-      {required Map<String, dynamic> query,
-      required BuildContext context,
-      required Function setState}) async {
-    var http = HttpService(
-        isAuthorizeRequest: false,
-        baseURL: kUrlBase,
-        endURL: kGetSubCategoryListEndUrl,
-        methodType: HttpMethodType.GET,
-        bodyType: HttpBodyType.JSON,
-        queryParameters: query);
-    try {
-      Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..': response?.data});
-
-      var subCategoryList = SubCategoryModel.fromJson(response?.data);
-      return subCategoryList;
-    } on DioException catch (error) {
-      BaseResponseModel baseResponseModel =
-          BaseResponseModel.fromJson(error.response?.data);
-      print(baseResponseModel.status?.message);
-
-      print({'error..': error});
-      http.handleErrorResponse(
-          context: context, error: error, errorResponse: baseResponseModel);
-    }
-    return null;
-  }
-
-  Future<CartProductListModel?> getCartProductListApi(
-      {required Map<String, dynamic> query,
-      required BuildContext context,
-      required Function setState}) async {
-    var http = HttpService(
-        isAuthorizeRequest: false,
-        baseURL: kUrlBase,
-        endURL: kGetCartProductListEndUrl,
+        endURL: kGetWalletEndUrl,
         methodType: HttpMethodType.GET,
         bodyType: HttpBodyType.JSON,
         queryParameters: query);
@@ -88,7 +26,7 @@ class Cartmanagementservice {
       Response<dynamic>? response = await http.request<dynamic>();
       print({'response..cartproduct': response?.data});
 
-      var cartProductListModel = CartProductListModel.fromJson(response?.data);
+      var cartProductListModel = GetWalletModel.fromJson(response?.data);
       return cartProductListModel;
     } on DioException catch (error) {
       BaseResponseModel baseResponseModel =
@@ -102,24 +40,79 @@ class Cartmanagementservice {
     return null;
   }
 
-  Future<UpdateProductListModel?> updateCartProductListApi(
+  Future<AddMoneyModel?> addWalletApi(
       {required Map<String, dynamic> body,
       required BuildContext context,
       required Function setState}) async {
     var http = HttpService(
         isAuthorizeRequest: false,
         baseURL: kUrlBase,
-        endURL: kUpdateCartProductListEndUrl,
-        methodType: HttpMethodType.PATCH,
+        endURL: kAddWalletEndUrl,
+        methodType: HttpMethodType.POST,
         bodyType: HttpBodyType.JSON,
         body: body);
+    try {
+      Response<dynamic>? response = await http.request<dynamic>();
+      print({'response..': response?.data});
+      var resp = AddMoneyModel.fromJson(response?.data);
+      return resp;
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
+      print({'error..': error});
+      http.handleErrorResponse(
+          context: context, error: error, errorResponse: baseResponseModel);
+    }
+    return null;
+  }
+
+  Future<VerifyWalletModel?> verifyWalletApi(
+      {required Map<String, dynamic> body,
+      required BuildContext context,
+      required Function setState}) async {
+    var http = HttpService(
+        isAuthorizeRequest: false,
+        baseURL: kUrlBase,
+        endURL: kVerifyWalletEndUrl,
+        methodType: HttpMethodType.POST,
+        bodyType: HttpBodyType.JSON,
+        body: body);
+    try {
+      Response<dynamic>? response = await http.request<dynamic>();
+      print({'response..': response?.data});
+      var resp = VerifyWalletModel.fromJson(response?.data);
+      return resp;
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
+      print({'error..': error});
+      http.handleErrorResponse(
+          context: context, error: error, errorResponse: baseResponseModel);
+    }
+    return null;
+  }
+
+  Future<RechargeHistoryModel?> getRechargeHistoryApi(
+      {required Map<String, dynamic> query,
+      required BuildContext context,
+      required Function setState}) async {
+    var http = HttpService(
+        isAuthorizeRequest: false,
+        baseURL: kUrlBase,
+        endURL: kRechargeHistoryEndUrl,
+        methodType: HttpMethodType.GET,
+        bodyType: HttpBodyType.JSON,
+        queryParameters: query);
     try {
       Response<dynamic>? response = await http.request<dynamic>();
       print({'response..cartproduct': response?.data});
 
-      var updatecartProductModel =
-          UpdateProductListModel.fromJson(response?.data);
-      return updatecartProductModel;
+      var resp = RechargeHistoryModel.fromJson(response?.data);
+      return resp;
     } on DioException catch (error) {
       BaseResponseModel baseResponseModel =
           BaseResponseModel.fromJson(error.response?.data);
@@ -132,51 +125,23 @@ class Cartmanagementservice {
     return null;
   }
 
-  Future<bool?> addtoCartApi(
-      {required Map<String, dynamic> body,
-      required BuildContext context,
-      required Function setState}) async {
-    var http = HttpService(
-        isAuthorizeRequest: false,
-        baseURL: kUrlBase,
-        endURL: kAddtoCartEndUrl,
-        methodType: HttpMethodType.POST,
-        bodyType: HttpBodyType.JSON,
-        body: body);
-    try {
-      Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..': response?.data});
-      return true;
-    } on DioException catch (error) {
-      BaseResponseModel baseResponseModel =
-          BaseResponseModel.fromJson(error.response?.data);
-      print(baseResponseModel.status?.message);
-
-      print({'error..': error});
-      http.handleErrorResponse(
-          context: context, error: error, errorResponse: baseResponseModel);
-    }
-    return null;
-  }
-
-  Future<SearchProductListModel?> searchtProductListApi(
+  Future<GetBillingListModel?> getBillingHistoryApi(
       {required Map<String, dynamic> query,
       required BuildContext context,
       required Function setState}) async {
     var http = HttpService(
         isAuthorizeRequest: false,
         baseURL: kUrlBase,
-        endURL: kSearchListEndUrl,
+        endURL: kGetBillingHistoryEndUrl,
         methodType: HttpMethodType.GET,
         bodyType: HttpBodyType.JSON,
         queryParameters: query);
     try {
       Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..search .': response?.data});
+      print({'response..cartproduct': response?.data});
 
-      var searchproductListModel =
-          SearchProductListModel.fromJson(response?.data);
-      return searchproductListModel;
+      var resp = GetBillingListModel.fromJson(response?.data);
+      return resp;
     } on DioException catch (error) {
       BaseResponseModel baseResponseModel =
           BaseResponseModel.fromJson(error.response?.data);
@@ -189,51 +154,23 @@ class Cartmanagementservice {
     return null;
   }
 
-  Future<bool?> placeOrderApi(
+  Future<GetBillingDetailModel?> getBillingDetailsApi(
       {required Map<String, dynamic> query,
       required BuildContext context,
       required Function setState}) async {
     var http = HttpService(
         isAuthorizeRequest: false,
         baseURL: kUrlBase,
-        endURL: kPlaceOrderEndUrl,
-        methodType: HttpMethodType.POST,
-        bodyType: HttpBodyType.JSON,
-        queryParameters: query);
-    try {
-      Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..': response?.data});
-      return true;
-    } on DioException catch (error) {
-      BaseResponseModel baseResponseModel =
-          BaseResponseModel.fromJson(error.response?.data);
-      print(baseResponseModel.status?.message);
-
-      print({'error..': error});
-      http.handleErrorResponse(
-          context: context, error: error, errorResponse: baseResponseModel);
-    }
-
-    return null;
-  }
-
-  Future<MyOrderListModel?> getMyOrderListApi(
-      {required Map<String, dynamic> query,
-      required BuildContext context,
-      required Function setState}) async {
-    var http = HttpService(
-        isAuthorizeRequest: false,
-        baseURL: kUrlBase,
-        endURL: kMyOrderListEndUrl,
+        endURL: kGetBillingDetailsEndUrl,
         methodType: HttpMethodType.GET,
         bodyType: HttpBodyType.JSON,
         queryParameters: query);
     try {
       Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..orderList': response?.data});
+      print({'response..cartproduct': response?.data});
 
-      var cartProductListModel = MyOrderListModel.fromJson(response?.data);
-      return cartProductListModel;
+      var resp = GetBillingDetailModel.fromJson(response?.data);
+      return resp;
     } on DioException catch (error) {
       BaseResponseModel baseResponseModel =
           BaseResponseModel.fromJson(error.response?.data);

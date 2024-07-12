@@ -1,5 +1,7 @@
-import 'package:e_basket/Providers/CartManagementProvider.dart';
-import 'package:e_basket/Screens/bottom_bar_screen/add_money_screen.dart';
+import 'package:e_basket/Providers/WalletProvider.dart';
+import 'package:e_basket/Screens/Wallet_Screen/billing_history_screen.dart';
+import 'package:e_basket/Screens/Wallet_Screen/recharge_history_screen.dart';
+
 import 'package:e_basket/Screens/bottom_bar_screen/bottom_bar_screen.dart';
 import 'package:e_basket/common_file/common_button.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
@@ -9,9 +11,8 @@ import 'package:group_button/group_button.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class WalletScreen extends StatefulWidget {
-  const WalletScreen({
-    super.key,
-  });
+  final String? sendOnPage;
+  const WalletScreen({super.key, this.sendOnPage});
 
   @override
   State<WalletScreen> createState() => _WalletScreenState();
@@ -20,14 +21,14 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   Razorpay _razorpay = Razorpay();
 
-  Cartmanagementprovider cartmanagementprovider = Cartmanagementprovider();
+  Walletprovider walletprovider = Walletprovider();
   TextEditingController amountcontroller = TextEditingController();
   // bool? visibleIcon;
   String result = '';
   @override
   void initState() {
     // TODO: implement initState
-    cartmanagementprovider.getWallet(context: context, setState: setState);
+    walletprovider.getWallet(context: context, setState: setState);
 
     super.initState();
     _razorpay;
@@ -40,6 +41,7 @@ class _WalletScreenState extends State<WalletScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    amountcontroller.text;
     _razorpay.clear();
   }
 
@@ -61,11 +63,19 @@ class _WalletScreenState extends State<WalletScreen> {
         backgroundColor: Colors.white,
         leading: IconButton(
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => BottomBarScreen()),
-                (Route<dynamic> route) => false,
-              );
+              if (widget.sendOnPage == 'mySubscription') {
+                Navigator.pop(context);
+              } else if (widget.sendOnPage == 'viewCart') {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => BottomBarScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              }
             },
             icon: Icon(Icons.arrow_back)),
         // automaticallyImplyLeading: widget.visible == true ? true : false,
@@ -78,7 +88,7 @@ class _WalletScreenState extends State<WalletScreen> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5)),
@@ -90,13 +100,13 @@ class _WalletScreenState extends State<WalletScreen> {
                       style: TextConstant().lableText,
                     ),
                     Text(
-                      '\u20B9 ${cartmanagementprovider.getWalletModel?.data?.amount ?? 00}',
+                      '\u20B9 ${walletprovider.getWalletModel?.data?.amount ?? 00}',
                       style: TextConstant().cardtitleText,
                     )
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Form(
@@ -132,14 +142,14 @@ class _WalletScreenState extends State<WalletScreen> {
                             });
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Text(
                           'Recommend',
                           style: TextConstant().cardtitleText,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         GroupButton(
@@ -153,23 +163,24 @@ class _WalletScreenState extends State<WalletScreen> {
                           },
                           options: GroupButtonOptions(
                               groupRunAlignment: GroupRunAlignment.start,
-                              unselectedTextStyle:
-                                  TextStyle(fontSize: 12, color: Colors.black),
-                              textPadding: EdgeInsets.only(left: 15, right: 15),
+                              unselectedTextStyle: const TextStyle(
+                                  fontSize: 12, color: Colors.black),
+                              textPadding:
+                                  const EdgeInsets.only(left: 15, right: 15),
                               textAlign: TextAlign.center,
                               buttonHeight: 35,
                               runSpacing: 25,
                               selectedTextStyle:
-                                  TextStyle(color: Color(0xFFBF5F0B)),
+                                  const TextStyle(color: Color(0xFFBF5F0B)),
                               selectedColor: Colors.transparent,
                               unselectedColor: Colors.transparent,
                               alignment: Alignment.center,
                               unselectedBorderColor: Colors.black,
-                              selectedBorderColor: Color(0xFFBF5F0B),
+                              selectedBorderColor: const Color(0xFFBF5F0B),
                               borderRadius: BorderRadius.circular(5),
                               mainGroupAlignment: MainGroupAlignment.start),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Center(
@@ -183,7 +194,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   //         builder: (context) => AddMoneyScreen(
                                   //             getAmount: result)));
 
-                                  cartmanagementprovider
+                                  walletprovider
                                       .addWalletMoney(
                                           context: context,
                                           setState: setState,
@@ -196,7 +207,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     }
                                   });
                                 })),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         )
                       ],
@@ -204,31 +215,46 @@ class _WalletScreenState extends State<WalletScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 children: [
                   Expanded(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const RechargeHistoryScreen()));
+                    },
                     child: cardItem(
-                        Icon(
+                        const Icon(
                           Icons.wallet_rounded,
                           color: Color(0xFFBF5F0B),
                         ),
                         'RECHARGE HISTORY'),
-                  ),
-                  SizedBox(
+                  )),
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BillingHistoryScreen()));
+                    },
                     child: cardItem(
-                        Icon(
+                        const Icon(
                           Icons.receipt_outlined,
                           color: Color(0xFFBF5F0B),
                         ),
                         'BILLING HISTORY'),
-                  ),
-                  SizedBox(
+                  )),
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
@@ -266,7 +292,7 @@ class _WalletScreenState extends State<WalletScreen> {
             //   color: Color(0xFFBF5F0B),
             // ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
@@ -326,7 +352,7 @@ class _WalletScreenState extends State<WalletScreen> {
     print({'payment id ': razorPaymentId});
     print({'signature': razorSignature});
 
-    cartmanagementprovider
+    walletprovider
         .verifyWalletMoney(
             context: context,
             setState: setState,
@@ -338,7 +364,7 @@ class _WalletScreenState extends State<WalletScreen> {
         Fluttertoast.showToast(
             msg: "Payment Transaction ${value?.data?.body?.status}",
             backgroundColor: Colors.green);
-        cartmanagementprovider.getWallet(context: context, setState: setState);
+        walletprovider.getWallet(context: context, setState: setState);
       } else {
         Fluttertoast.showToast(
             msg: "${value?.data?.body?.status}", backgroundColor: Colors.green);

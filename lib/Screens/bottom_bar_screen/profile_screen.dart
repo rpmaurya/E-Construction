@@ -1,6 +1,8 @@
 import 'package:e_basket/Providers/AuthProvider.dart';
 import 'package:e_basket/Screens/Subscription_Management_Screen/MySubscription_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/OrderScreen.dart';
 import 'package:e_basket/Screens/bottom_bar_screen/edit_profile_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/wallet_screen.dart';
 import 'package:e_basket/Screens/login_screen/login_screen.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
@@ -162,13 +164,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Divider(),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Orderscreen(
+                                      backPage: true,
+                                    )));
+                      },
                       child:
                           listItem(Icons.content_paste_outlined, 'My Orders'),
                     ),
                     Divider(),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WalletScreen(
+                                      sendOnPage: 'mySubscription',
+                                    )));
+                      },
                       child: listItem(Icons.wallet_outlined, 'My Wallet'),
                     ),
                     Divider(),
