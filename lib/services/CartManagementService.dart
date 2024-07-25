@@ -3,6 +3,7 @@ import 'package:e_basket/constant_file/Url.dart';
 import 'package:e_basket/models/AddMoneyModel.dart';
 import 'package:e_basket/models/BaseResponse.dart';
 import 'package:e_basket/models/CartProductListModel.dart';
+import 'package:e_basket/models/FilterListModel.dart';
 import 'package:e_basket/models/GetWalletModel.dart';
 import 'package:e_basket/models/MyOrderListModel.dart';
 import 'package:e_basket/models/ProductListByCategoryIdModel.dart';
@@ -27,7 +28,7 @@ class Cartmanagementservice {
         queryParameters: query);
     try {
       Response<dynamic>? response = await http.request<dynamic>();
-      print({'response..product of categoryid': response?.data});
+      print({'response..product list': response?.data});
 
       var productListModel =
           ProductListByCategoryIdModel.fromJson(response?.data);
@@ -233,6 +234,35 @@ class Cartmanagementservice {
       print({'response..orderList': response?.data});
 
       var cartProductListModel = MyOrderListModel.fromJson(response?.data);
+      return cartProductListModel;
+    } on DioException catch (error) {
+      BaseResponseModel baseResponseModel =
+          BaseResponseModel.fromJson(error.response?.data);
+      print(baseResponseModel.status?.message);
+
+      print({'error..': error});
+      http.handleErrorResponse(
+          context: context, error: error, errorResponse: baseResponseModel);
+    }
+    return null;
+  }
+
+  Future<FilterListModel?> filterByrefineApi(
+      {required Map<String, dynamic> body,
+      required BuildContext context,
+      required Function setState}) async {
+    var http = HttpService(
+        isAuthorizeRequest: false,
+        baseURL: kUrlBase,
+        endURL: kFilterByRefineEndUrl,
+        methodType: HttpMethodType.POST,
+        bodyType: HttpBodyType.JSON,
+        body: body);
+    try {
+      Response<dynamic>? response = await http.request<dynamic>();
+      print({'response..orderList': response?.data});
+
+      var cartProductListModel = FilterListModel.fromJson(response?.data);
       return cartProductListModel;
     } on DioException catch (error) {
       BaseResponseModel baseResponseModel =

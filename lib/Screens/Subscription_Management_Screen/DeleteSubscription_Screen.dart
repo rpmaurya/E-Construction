@@ -104,14 +104,14 @@ class _DeletesubscriptionScreenState extends State<DeletesubscriptionScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               'Cancellation Reason',
               style: TextConstant().cardtitleText,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(

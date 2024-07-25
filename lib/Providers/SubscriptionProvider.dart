@@ -16,6 +16,8 @@ class Subscriptionprovider with ChangeNotifier {
   AddSubscriptionModel? addSubscriptionModel;
   GetSubscriptionModel? getSubscriptionModel;
   bool isLoding = false;
+  // int currentPage = 0;
+  // int itemsPerPage = 10;
   Future<ProductSubscriptionModel?> addProductSubscription(
       {required BuildContext context,
       required setState,
@@ -223,16 +225,17 @@ class Subscriptionprovider with ChangeNotifier {
     return null;
   }
 
-  Future<void> getSubscription({
-    required BuildContext context,
-    required setState,
-  }) async {
+  Future<void> getSubscription(
+      {required BuildContext context,
+      required setState,
+      required currentPage,
+      required pagesize}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var getid = pref.getInt('userId');
     Map<String, dynamic> query = {
       "userId": getid,
-      "page": 0,
-      'size': 20,
+      "page": currentPage,
+      'size': pagesize,
     };
     print({'query of subcategory id': query});
     try {
@@ -247,8 +250,8 @@ class Subscriptionprovider with ChangeNotifier {
             getSubscriptionModel = value;
 
             notifyListeners();
-            isLoding = false;
           });
+          isLoding = false;
         }
       });
     } catch (e) {

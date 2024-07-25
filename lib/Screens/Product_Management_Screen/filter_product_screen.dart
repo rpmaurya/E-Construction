@@ -2,27 +2,38 @@ import 'package:e_basket/Providers/CartManagementProvider.dart';
 import 'package:e_basket/Screens/Product_Management_Screen/filter_screen.dart';
 import 'package:e_basket/Screens/Product_Management_Screen/placeOrder_screen.dart';
 import 'package:e_basket/Screens/Product_Management_Screen/product_management_screen.dart';
+import 'package:e_basket/Screens/bottom_bar_screen/bottom_bar_screen.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
-import 'package:e_basket/models/SearchProductListModel.dart';
+import 'package:e_basket/models/FilterListModel.dart';
+import 'package:e_basket/models/SubcategoryModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_maps_webservices/places.dart';
 
-class SearchProductScreen extends StatefulWidget {
-  final String? searchText;
+class FilterProductScreen extends StatefulWidget {
   final bool visible;
-  const SearchProductScreen(
-      {super.key, required this.searchText, required this.visible});
+  final SubCategoryModel? getData;
+  final FilterListModel? filterListModel;
+  final int? categoryId;
+  final int? subCategoryId;
+
+  const FilterProductScreen({
+    super.key,
+    required this.visible,
+    this.getData,
+    required this.filterListModel,
+    this.categoryId,
+    this.subCategoryId,
+  });
 
   @override
-  State<SearchProductScreen> createState() => _SearchProductScreenState();
+  State<FilterProductScreen> createState() => _FilterProductScreenState();
 }
 
-class _SearchProductScreenState extends State<SearchProductScreen> {
+class _FilterProductScreenState extends State<FilterProductScreen> {
   Cartmanagementprovider cartmanagementprovider = Cartmanagementprovider();
-
   int quantity = 0;
-  List<Content> dataList = [];
-  SearchProductListModel? searchProductListModel;
+  List<Datum> dataList = [];
   int currentPage = 0;
   bool lastPage = false;
   bool isLoading = false;
@@ -60,27 +71,13 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
     setState(() {
       isLoading = true;
     });
-
-    cartmanagementprovider
-        .searchProductList(
-            context: context,
-            setState: setState,
-            searchText: widget.searchText,
-            currentPage: currentPage,
-            pageSize: itemsPerPage)
-        .then((onValue) {
-      if (onValue?.status?.httpCode == '200') {
-        setState(() {
-          searchProductListModel = onValue;
-        });
-      }
-    });
+    widget.filterListModel;
     await Future.delayed(Duration(seconds: 2)); // Simulate network delay
     // List<int> newItems = List.generate(
     //     itemsPerPage, (index) => (currentPage) * itemsPerPage + index + 1);
     // print('newvalue$newItems');
 
-    var newData = searchProductListModel?.data?.content;
+    var newData = widget.filterListModel?.data;
 
     setState(() {
       if ((newData ?? []).length < itemsPerPage) {
@@ -94,6 +91,12 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
@@ -104,7 +107,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                 surfaceTintColor: Colors.transparent,
                 elevation: 0,
                 automaticallyImplyLeading: false,
-                expandedHeight: 100.0,
+                expandedHeight: widget.visible == true ? 180.0 : 110.0,
                 floating: false,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
@@ -113,6 +116,16 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                   background: Column(
                     children: [
                       AppBar(
+                        leading: IconButton(
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BottomBarScreen()),
+                                (Route<dynamic> route) => false,
+                              );
+                            },
+                            icon: Icon(Icons.arrow_back)),
                         centerTitle: true,
                         title: Text('Go build'),
                         actions: [
@@ -127,12 +140,9 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                               height: 55,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: cartmanagementprovider
-                                          .subCategoryModel?.data?.length ??
-                                      0,
+                                  itemCount: widget.getData?.data?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    var getdata = cartmanagementprovider
-                                        .subCategoryModel?.data;
+                                    var getdata = widget.getData?.data;
                                     return Padding(
                                       padding: const EdgeInsets.only(
                                           left: 12, right: 5),
@@ -197,7 +207,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${dataList.length} items',
+                            '${widget.filterListModel?.data?.length ?? 0} items',
                             style: TextConstant().subtitleText,
                           ),
                           GestureDetector(
@@ -206,14 +216,15 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => FilterScreen(
-                                            navigatioOf: true,
+                                            getData: widget.getData,
+                                            navigatioOf: false,
                                           )));
                             },
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(color: Colors.black87),
-                                  color: Colors.white),
+                                  color: Colors.grey[200]),
                               child: Padding(
                                 padding:
                                     const EdgeInsets.only(left: 8, right: 8),
@@ -245,12 +256,13 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           },
           body: Container(
             color: Colors.white70,
-            child: dataList.isEmpty
+            child: (widget.filterListModel?.data ?? []).isEmpty
                 ? const Center(
                     child: Text('No Data Found'),
                   )
                 : ListView.builder(
-                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
                     itemCount:
                         dataList.length + (isLoading || lastPage ? 1 : 0),
                     itemBuilder: (context, index) {
@@ -286,8 +298,6 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                 Row(
                                   children: [
                                     Container(
-                                      width: 150,
-                                      height: 150,
                                       decoration: BoxDecoration(
                                           border:
                                               Border.all(color: Colors.black12),
@@ -300,7 +310,9 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                               BorderRadius.circular(5),
                                           child: Image.network(
                                             getdat[index].productImageUrl ??
-                                                'https://tse4.mm.bing.net/th?id=OIP.8vtlhiG0ozEzXbDlax-91gAAAA&pid=Api&P=0&h=220',
+                                                'https://5.imimg.com/data5/CT/IY/XK/GLADMIN-12/jcbe1.jpeg',
+                                            width: 150,
+                                            height: 150,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -346,13 +358,13 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                     ?.data ==
                                                 null ||
                                             getdat[index]
-                                                    .userSelectedquantity ==
-                                                null
+                                                    .userSelectedQuantity ==
+                                                0
                                         ? GestureDetector(
                                             onTap: () {
                                               setState(() {
                                                 quantity = getdat[index]
-                                                        .userSelectedquantity ??
+                                                        .userSelectedQuantity ??
                                                     0;
                                               });
                                               cartmanagementprovider
@@ -371,8 +383,10 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                   //     .getProductList(
                                                   //         context: context,
                                                   //         setState: setState,
-                                                  //         categoryId: 0,
-                                                  //         subCategoryId: 0);
+                                                  //         categoryId:
+                                                  //             widget.categoryId,
+                                                  //         subCategoryId: widget
+                                                  //             .subCategoryId);
                                                   cartmanagementprovider
                                                       .getCartProductList(
                                                           context: context,
@@ -413,7 +427,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                     onTap: () {
                                                       setState(() {
                                                         quantity = getdat[index]
-                                                                .userSelectedquantity ??
+                                                                .userSelectedQuantity ??
                                                             0;
                                                       });
                                                       cartmanagementprovider
@@ -431,15 +445,14 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                                   --quantity)
                                                           .then((value) {
                                                         setState(() {
-                                                          // cartmanagementprovider
-                                                          //     .getProductList(
-                                                          //         context:
-                                                          //             context,
-                                                          //         setState:
-                                                          //             setState,
-                                                          //         categoryId: 0,
-                                                          //         subCategoryId:
-                                                          //             0);
+                                                          // cartmanagementprovider.getProductList(
+                                                          //     context: context,
+                                                          //     setState:
+                                                          //         setState,
+                                                          //     categoryId: widget
+                                                          //         .categoryId,
+                                                          //     subCategoryId: widget
+                                                          //         .subCategoryId);
                                                           cartmanagementprovider
                                                               .getCartProductList(
                                                                   context:
@@ -461,7 +474,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                         color: Colors.pink,
                                                         child: Center(
                                                             child: Text(
-                                                          '${getdat[index].userSelectedquantity ?? 0}',
+                                                          '${getdat[index].userSelectedQuantity ?? 0}',
                                                           style: const TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -476,7 +489,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                     onTap: () {
                                                       setState(() {
                                                         quantity = getdat[index]
-                                                                .userSelectedquantity ??
+                                                                .userSelectedQuantity ??
                                                             0;
                                                       });
                                                       cartmanagementprovider
@@ -499,10 +512,11 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                                         //             context,
                                                         //         setState:
                                                         //             setState,
-                                                        //         categoryId:
-                                                        //             widget,
+                                                        //         categoryId: widget
+                                                        //             .categoryId,
                                                         //         subCategoryId:
-                                                        //             widget);
+                                                        //             widget
+                                                        //                 .subCategoryId);
                                                         cartmanagementprovider
                                                             .getCartProductList(
                                                                 context:

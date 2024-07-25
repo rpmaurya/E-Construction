@@ -15,6 +15,16 @@ class Walletprovider with ChangeNotifier {
   RechargeHistoryModel? rechargeHistoryModel;
   GetBillingListModel? getBillingListModel;
   GetBillingDetailModel? getBillingDetailModel;
+  String selectedItem1 = '';
+
+  String get selectedItem => selectedItem1;
+
+  set selectedItem(String value) {
+    selectedItem1 = value;
+    print({'jhjkhj': selectedItem1});
+    notifyListeners();
+  }
+
   bool isLoding = false;
   Future<void> getWallet({
     required BuildContext context,

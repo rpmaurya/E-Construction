@@ -29,7 +29,7 @@ class _RechargeHistoryScreenState extends State<RechargeHistoryScreen> {
           IconButton(
               onPressed: () {},
               icon: Image.asset(
-                'assets/images/icon-align.png',
+                'assets/images/bars-filter-icon.webp',
                 fit: BoxFit.fill,
                 color: Colors.black,
                 height: 20,
@@ -138,8 +138,9 @@ class _RechargeHistoryScreenState extends State<RechargeHistoryScreen> {
                     child: Container(
                       height: MediaQuery.of(context).size.height * 9,
                       child: ListView.separated(
+                          shrinkWrap: true,
                           // padding: EdgeInsets.all(10),
-                          physics: PageScrollPhysics(),
+                          physics: NeverScrollableScrollPhysics(),
                           separatorBuilder: (context, index) {
                             return Divider(
                               height: 0.3,

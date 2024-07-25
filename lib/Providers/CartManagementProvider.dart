@@ -1,4 +1,5 @@
 import 'package:e_basket/models/CartProductListModel.dart';
+import 'package:e_basket/models/FilterListModel.dart';
 
 import 'package:e_basket/models/MyOrderListModel.dart';
 import 'package:e_basket/models/ProductListByCategoryIdModel.dart';
@@ -20,17 +21,33 @@ class Cartmanagementprovider with ChangeNotifier {
   SearchProductListModel? searchProductListModel;
 
   MyOrderListModel? myOrderListModel;
+  FilterListModel? filterListModel;
+  List<int> selectedItem1 = [];
+
+  List<int> get selectedItem => selectedItem1;
+
+  set selectedItem(List<int> value) {
+    selectedItem1 = value;
+    print({'jhjkhj': selectedItem1});
+    notifyListeners();
+  }
+
+  List<int> isSelectedCategory = [];
+  List<int> isSelectedBrand = [];
+  List<Map<String, dynamic>> isSelectedPrice = [];
   var isLoding = false;
   Future<ProductListByCategoryIdModel?> getProductList(
       {required BuildContext context,
       required setState,
+      required currentPage,
+      required pageSize,
       required categoryId,
       subCategoryId}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var getid = pref.getInt('userId');
     Map<String, dynamic> query = {
-      "page": 0,
-      "size": 20,
+      "page": currentPage,
+      "size": pageSize,
       'categoryId': categoryId,
       'subcategoryId': subCategoryId,
       'userId': getid
@@ -187,13 +204,16 @@ class Cartmanagementprovider with ChangeNotifier {
     }
   }
 
-  Future<SearchProductListModel?> searchProductList(
-      {required BuildContext context,
-      required setState,
-      required searchText}) async {
+  Future<SearchProductListModel?> searchProductList({
+    required BuildContext context,
+    required setState,
+    required searchText,
+    required currentPage,
+    required pageSize,
+  }) async {
     Map<String, dynamic> query = {
-      "page": 0,
-      "size": 10,
+      "page": currentPage,
+      "size": pageSize,
       'isDeleted': null,
       'searchText': searchText,
       'filterByQuantity': '',
@@ -264,5 +284,42 @@ class Cartmanagementprovider with ChangeNotifier {
     } catch (e) {
       print({'object': e});
     }
+  }
+
+  Future<FilterListModel?> filterByRefine(
+      {required BuildContext context,
+      required setState,
+      required categoryIds,
+      required brandsId,
+      required priceRanges}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var getid = pref.getInt('userId');
+
+    Map<String, dynamic> body = {
+      'categoryIds': categoryIds,
+      'brandsId': brandsId,
+      'priceRanges': priceRanges,
+      'userId': getid,
+    };
+    print({'body of filter': body});
+    try {
+      setState(() {
+        isLoding = true;
+      });
+      await cartmanagementservice
+          .filterByrefineApi(body: body, context: context, setState: setState)
+          .then((value) {
+        if (value?.status?.httpCode == '200') {
+          setState(() {
+            filterListModel = value;
+            notifyListeners();
+          });
+          isLoding = false;
+        }
+      });
+    } catch (e) {
+      print({'object': e});
+    }
+    return null;
   }
 }

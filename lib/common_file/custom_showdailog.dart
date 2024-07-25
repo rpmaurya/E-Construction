@@ -33,7 +33,7 @@ class _CustomShowdailogState extends State<CustomShowdailog> {
               'assets/images/e-construction.png',
               scale: 2.5,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -41,7 +41,7 @@ class _CustomShowdailogState extends State<CustomShowdailog> {
               // 'Modify Subscription',
               style: TextConstant().lableText,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(

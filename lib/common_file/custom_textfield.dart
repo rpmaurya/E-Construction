@@ -18,6 +18,7 @@ class CustomTextfield extends StatefulWidget {
   final Color? fillColor;
   final FocusNode? focusNode;
   final double? width;
+  final double? hieght;
 
   const CustomTextfield(
       {super.key,
@@ -25,7 +26,7 @@ class CustomTextfield extends StatefulWidget {
       required this.hintText,
       this.validator,
       this.obscureText,
-      this.maxLines = 1,
+      this.maxLines,
       this.minLines = 1,
       this.textLength,
       this.obscuringCharacter,
@@ -35,7 +36,8 @@ class CustomTextfield extends StatefulWidget {
       this.onChanged,
       this.enabled,
       this.focusNode,
-      this.width});
+      this.width,
+      this.hieght});
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -45,6 +47,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: widget.hieght,
       width: widget.width,
       child: TextFormField(
         focusNode: widget.focusNode,
@@ -53,7 +56,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         inputFormatters: [
           LengthLimitingTextInputFormatter(widget.textLength),
         ],
-        maxLines: widget.maxLines,
+        maxLines: widget.maxLines ?? 1,
         minLines: widget.minLines,
         keyboardType: widget.keyboardType,
         enabled: widget.enabled,

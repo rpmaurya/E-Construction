@@ -14,6 +14,8 @@ class TextConstant {
       fontWeight: FontWeight.w700);
   var lableText = GoogleFonts.inter(
       color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500);
+  var filterlableText = GoogleFonts.inter(
+      color: Colors.black, fontSize: 15, fontWeight: FontWeight.w400);
   var cardTitle = GoogleFonts.inter(
       textStyle: const TextStyle(fontSize: 18),
       fontWeight: FontWeight.w500,

@@ -4,6 +4,7 @@ import 'package:e_basket/common_file/BuyAndScubscribe_container.dart';
 import 'package:e_basket/common_file/custom_showdailog.dart';
 import 'package:e_basket/constant_file/color_constant.dart';
 import 'package:e_basket/constant_file/text_constant.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -279,7 +280,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                     'Select Dates',
                     style: TextConstant().lableText,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -294,7 +295,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                           },
                           child: datecontainer('From Date ', '${startdate}'),
                         ),
-                        Divider(
+                        const Divider(
                           height: 0,
                         ),
                         GestureDetector(
@@ -330,7 +331,9 @@ class _ModifyScreenState extends State<ModifyScreen> {
                           quentity: quentity)
                       .then((value) {
                     if (value?.status?.httpCode == '200') {
-                      print('object.......,.,. ${value?.data?.productName}');
+                      if (kDebugMode) {
+                        print('object.......,.,. ${value?.data?.productName}');
+                      }
                       showDialog(
                           context: context,
                           builder: (context) {
